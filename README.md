@@ -25,7 +25,6 @@ A full-stack escrow-based content marketing marketplace connecting **Advertisers
 | Database | PostgreSQL (Supabase) |
 | ORM | Prisma |
 | Auth | NextAuth.js v5 |
-| Payments | Stripe |
 | Email | Resend |
 | Deployment | Vercel |
 
@@ -67,7 +66,7 @@ MediaHub/
 - ✅ Marketplace search with advanced filtering
 - ✅ Full order/task workflow with 9 status stages
 - ✅ Escrow wallet system (Balance / Reserved / Bonus)
-- ✅ Stripe top-up + manual withdrawal
+- ✅ Wallet manual top-up & withdrawals (automated payments in Phase 2)
 - ✅ In-task messaging
 - ✅ Real-time notifications
 - ✅ Admin control panel
@@ -90,7 +89,6 @@ PUBLISHER:  New   → Your Acceptance → In Progress → Approval → Completed
 ### Prerequisites
 - Node.js 18+
 - PostgreSQL (or Supabase account)
-- Stripe account
 - Resend account (for emails)
 
 ### Installation
@@ -103,10 +101,13 @@ cd mediatech
 npm install
 
 # Copy environment variables
-cp .env.example .env.local
+cp .env.example .env
 
-# Run database migrations
-npx prisma migrate dev
+# Sync database schema (Prisma 7)
+npx prisma db push
+
+# Generate Prisma client
+npx prisma generate
 
 # Start development server
 npm run dev
@@ -121,19 +122,16 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 ```env
 # Database
 DATABASE_URL=
+DIRECT_URL=
 
 # NextAuth
+AUTH_SECRET=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3000
 
 # Google OAuth
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-
-# Stripe
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 
 # Resend (Email)
 RESEND_API_KEY=

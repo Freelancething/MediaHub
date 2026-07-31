@@ -50,7 +50,7 @@ export function Sidebar({ navItems, role }: SidebarProps) {
         })}
       </nav>
 
-      {/* Bottom: Collapse + Sign out */}
+
       <div className="sidebar-footer">
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
