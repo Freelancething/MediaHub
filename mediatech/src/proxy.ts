@@ -32,8 +32,10 @@ export default auth((req) => {
   const session = req.auth;
 
   const isAuthRoute   = AUTH_ROUTES.some((r) => pathname.startsWith(r));
-  const isPublicRoute = PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(r));
+  const isPublicRoute = pathname === "/" || PUBLIC_ROUTES.some((r) => r !== "/" && pathname.startsWith(r));
   const isApiRoute    = pathname.startsWith("/api/");
+
+  console.log(`[MIDDLEWARE] Path: ${pathname} | isAuth: ${isAuthRoute} | isPublic: ${isPublicRoute} | HasSession: ${!!session?.user}`);
 
   // Allow all API routes through (handled separately)
   if (isApiRoute) return NextResponse.next();
@@ -41,6 +43,7 @@ export default auth((req) => {
   // Logged-in user visiting auth page → redirect to dashboard
   if (isAuthRoute && session?.user) {
     const role = (session.user as any).role as string;
+    console.log(`[MIDDLEWARE] Redirecting logged-in user to: ${ROLE_HOME[role]}`);
     return NextResponse.redirect(new URL(ROLE_HOME[role] ?? "/login", nextUrl));
   }
 

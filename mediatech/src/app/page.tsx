@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShoppingBagIcon, GlobeAltIcon, DevicePhoneMobileIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   return (
@@ -46,21 +47,27 @@ export default function Home() {
           <h2 className="section-title text-center mb-12">How it works for your growth</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="feature-card card">
-              <div className="feature-icon bg-[#eef0fd] text-primary">🛒</div>
+              <div className="feature-icon bg-[#eef0fd] text-primary">
+                <ShoppingBagIcon className="w-6 h-6" />
+              </div>
               <h3 className="feature-card-title mt-4">Advertisers (Buyers)</h3>
               <p className="text-muted text-sm mt-2">
                 Top up your wallet, search verified publishers or social influencers, place orders securely, and pay only after approving the delivery.
               </p>
             </div>
             <div className="feature-card card">
-              <div className="feature-icon bg-[#d6f5d0] text-success">📰</div>
+              <div className="feature-icon bg-[#d6f5d0] text-success">
+                <GlobeAltIcon className="w-6 h-6" />
+              </div>
               <h3 className="feature-card-title mt-4">Web Publishers (Sellers)</h3>
               <p className="text-muted text-sm mt-2">
                 List your website platform, set metrics like Domain Authority and traffic, accept guest post or link insertion orders, and monetize.
               </p>
             </div>
             <div className="feature-card card">
-              <div className="feature-icon bg-[#fddde5] text-danger">📱</div>
+              <div className="feature-icon bg-[#fddde5] text-danger">
+                <DevicePhoneMobileIcon className="w-6 h-6" />
+              </div>
               <h3 className="feature-card-title mt-4">Social Influencers</h3>
               <p className="text-muted text-sm mt-2">
                 Connect your social channels (Instagram, YouTube, TikTok, X), build custom shoutout packages, work with top brands, and cash out easily.

@@ -2,26 +2,27 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRightIcon, ShoppingBagIcon, GlobeAltIcon, DevicePhoneMobileIcon } from "@heroicons/react/24/outline";
 
 type Role = "ADVERTISER" | "PUBLISHER" | "INFLUENCER";
 
-const ROLES: { value: Role; label: string; icon: string; desc: string }[] = [
+const ROLES = [
   {
-    value: "ADVERTISER",
+    value: "ADVERTISER" as Role,
     label: "Advertiser",
-    icon: "🛒",
+    icon: ShoppingBagIcon,
     desc: "Buy guest posts, link insertions & influencer shoutouts",
   },
   {
-    value: "PUBLISHER",
+    value: "PUBLISHER" as Role,
     label: "Publisher",
-    icon: "📰",
+    icon: GlobeAltIcon,
     desc: "Monetize your website by accepting paid content",
   },
   {
-    value: "INFLUENCER",
+    value: "INFLUENCER" as Role,
     label: "Influencer",
-    icon: "📱",
+    icon: DevicePhoneMobileIcon,
     desc: "Earn from brand deals on your social channels",
   },
 ];
@@ -68,6 +69,8 @@ export function RegisterForm() {
     }
   }
 
+  const ActiveRoleIcon = ROLES.find(r => r.value === role)?.icon || ShoppingBagIcon;
+
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
       {error && <div className="reg-error">{error}</div>}
@@ -76,25 +79,28 @@ export function RegisterForm() {
         <>
           <p className="reg-label">I want to join as a…</p>
           <div className="role-grid">
-            {ROLES.map((r) => (
-              <button
-                key={r.value}
-                type="button"
-                onClick={() => setRole(r.value)}
-                className={`role-card ${role === r.value ? "role-card--active" : ""}`}
-              >
-                <span className="role-icon">{r.icon}</span>
-                <span className="role-name">{r.label}</span>
-                <span className="role-desc">{r.desc}</span>
-              </button>
-            ))}
+            {ROLES.map((r) => {
+              const IconComponent = r.icon;
+              return (
+                <button
+                  key={r.value}
+                  type="button"
+                  onClick={() => setRole(r.value)}
+                  className={`role-card ${role === r.value ? "role-card--active" : ""}`}
+                >
+                  <span className="role-icon-wrapper">
+                    <IconComponent className="w-5 h-5 text-grey-blue" />
+                  </span>
+                  <span className="role-name">{r.label}</span>
+                  <span className="role-desc">{r.desc}</span>
+                </button>
+              );
+            })}
           </div>
           <button type="submit" className="login-submit-btn">
             <span>Continue</span>
             <span className="login-submit-arrow">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M1 7h12M8 2l5 5-5 5" stroke="#112c3e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <ArrowRightIcon className="w-4 h-4 text-dark" />
             </span>
           </button>
         </>
@@ -106,7 +112,7 @@ export function RegisterForm() {
             ← Back
           </button>
           <div className="reg-role-chip">
-            {ROLES.find(r => r.value === role)?.icon} Joining as {ROLES.find(r => r.value === role)?.label}
+            <ActiveRoleIcon className="w-4 h-4" /> Joining as {ROLES.find(r => r.value === role)?.label}
           </div>
           <input className="input" type="text" placeholder="Full name" value={name} onChange={e => setName(e.target.value)} required autoComplete="name" />
           <input className="input" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" />
@@ -119,9 +125,7 @@ export function RegisterForm() {
           <button type="submit" disabled={loading} className="login-submit-btn">
             <span>{loading ? "Creating account…" : "Create Account"}</span>
             <span className="login-submit-arrow">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M1 7h12M8 2l5 5-5 5" stroke="#112c3e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <ArrowRightIcon className="w-4 h-4 text-dark" />
             </span>
           </button>
         </>

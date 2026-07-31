@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { BellIcon } from "@heroicons/react/24/outline";
 
 type Crumb = { label: string; href?: string };
 
@@ -70,9 +70,7 @@ export function TopHeader({
         <div className="header-actions">
           {/* Notifications */}
           <Link href="/notifications" className="header-icon-btn" aria-label="Notifications">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
+            <BellIcon className="w-5 h-5" />
             {notificationCount > 0 && (
               <span className="header-notif-badge">{notificationCount > 9 ? "9+" : notificationCount}</span>
             )}

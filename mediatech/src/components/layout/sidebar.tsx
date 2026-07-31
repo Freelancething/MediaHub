@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export type NavItem = {
   label: string;
@@ -52,12 +53,10 @@ export function Sidebar({ navItems, role }: SidebarProps) {
       {/* Bottom: Collapse + Sign out */}
       <div className="sidebar-footer">
         <button
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={() => signOut({ callbackUrl: "/" })}
           className="sidebar-signout"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
-          </svg>
+          <ArrowRightOnRectangleIcon className="w-4 h-4" />
           <span>Sign out</span>
         </button>
         <button className="sidebar-collapse btn-ghost btn-sm">

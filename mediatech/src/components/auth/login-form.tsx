@@ -4,6 +4,8 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { Alert } from "@/components/ui/alert";
 
 export function LoginForm() {
   const router = useRouter();
@@ -14,7 +16,14 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const oauthError = searchParams.get("error");
+  const [error, setError] = useState(
+    oauthError === "OAuthSignin" || oauthError === "OAuthCallback"
+      ? "Google sign in failed. Please try again."
+      : oauthError === "CredentialsSignin"
+      ? "Account not found or password incorrect."
+      : ""
+  );
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,7 +40,7 @@ export function LoginForm() {
     setLoading(false);
 
     if (res?.error) {
-      setError("Invalid email or password.");
+      setError("Account not found or password incorrect.");
       return;
     }
 
@@ -42,7 +51,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
       {error && (
-        <div className="form-error-banner">{error}</div>
+        <Alert message={error} type="error" onDismiss={() => setError("")} />
       )}
 
       <div className="form-field">
@@ -91,9 +100,7 @@ export function LoginForm() {
       >
         <span>{loading ? "Signing in…" : "Log In"}</span>
         <span className="login-submit-arrow">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M1 7h12M8 2l5 5-5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <ArrowRightIcon className="w-4 h-4 text-dark" />
         </span>
       </button>
 
