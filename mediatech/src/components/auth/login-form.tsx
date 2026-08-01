@@ -44,6 +44,26 @@ export function LoginForm() {
       return;
     }
 
+    // Dynamic role redirection instead of landing page "/" fallback
+    try {
+      const sessionRes = await fetch("/api/auth/session");
+      const session = await sessionRes.json();
+      if (session?.user?.role) {
+        const role = session.user.role;
+        const roleHome: Record<string, string> = {
+          ADVERTISER: "/advertiser/sites",
+          PUBLISHER:  "/publisher/platforms",
+          INFLUENCER: "/influencer/channels",
+          ADMIN:      "/admin/dashboard",
+        };
+        router.push(roleHome[role] ?? "/");
+        router.refresh();
+        return;
+      }
+    } catch (e) {
+      console.error("Failed to fetch session for redirect:", e);
+    }
+
     router.push(callbackUrl);
     router.refresh();
   }

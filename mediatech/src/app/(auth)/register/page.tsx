@@ -14,11 +14,6 @@ export default function RegisterPage() {
         <div className="login-bg__blob login-bg__blob--green" />
       </div>
 
-      <span className="da-watermark" style={{ top: "12%", left: "8%" }}>DA: 67</span>
-      <span className="da-watermark" style={{ top: "20%", right: "10%" }}>DA: 31</span>
-      <span className="da-watermark" style={{ bottom: "25%", left: "12%" }}>DA: 54</span>
-      <span className="da-watermark" style={{ bottom: "18%", right: "8%" }}>DA: 42</span>
-
       <div className="login-card" style={{ maxWidth: 500 }}>
         <div className="login-logo">
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none">

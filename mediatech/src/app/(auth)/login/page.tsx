@@ -18,11 +18,6 @@ export default function LoginPage() {
         <div className="login-bg__blob login-bg__blob--green" />
       </div>
 
-      {/* DA watermark decorations */}
-      <span className="da-watermark" style={{ top: "12%", left: "8%" }}>DA: 67</span>
-      <span className="da-watermark" style={{ top: "20%", right: "10%" }}>DA: 31</span>
-      <span className="da-watermark" style={{ bottom: "25%", left: "12%" }}>DA: 54</span>
-      <span className="da-watermark" style={{ bottom: "18%", right: "8%" }}>DA: 42</span>
 
       {/* Login card */}
       <div className="login-card">

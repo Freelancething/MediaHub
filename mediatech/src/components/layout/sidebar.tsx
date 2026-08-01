@@ -50,47 +50,32 @@ export function Sidebar({ navItems, role }: SidebarProps) {
         })}
       </nav>
 
-
-      <div className="sidebar-footer">
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="sidebar-signout"
-        >
-          <ArrowRightOnRectangleIcon className="w-4 h-4" />
-          <span>Sign out</span>
-        </button>
-        <button className="sidebar-collapse btn-ghost btn-sm">
-          Collapse view
-        </button>
-      </div>
-
       <style>{`
         .sidebar-logo {
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 18px 16px 14px;
-          border-bottom: 1px solid var(--color-border);
+          gap: 12px;
+          padding: 24px 20px 20px;
         }
         .sidebar-logo__text {
-          font-size: 15px;
+          font-size: 18px;
           font-weight: 700;
           color: var(--color-dark);
           font-family: var(--font-space-grotesk);
         }
         .sidebar-nav {
           flex: 1;
-          padding: 12px 8px;
+          padding: 12px 14px;
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 6px;
           overflow-y: auto;
         }
         .sidebar-nav__item {
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 9px 10px;
+          gap: 14px;
+          padding: 11px 14px;
           border-radius: 8px;
           font-size: 14px;
           font-weight: 500;
@@ -100,11 +85,15 @@ export function Sidebar({ navItems, role }: SidebarProps) {
           transition: background 0.12s ease, color 0.12s ease;
         }
         .sidebar-nav__item:hover {
-          background: var(--color-muted);
+          background: #f5f8fa;
           color: var(--color-dark);
         }
         .sidebar-nav__item--active {
-          background: #eef0fd;
+          background: transparent;
+          color: var(--color-primary);
+          font-weight: 600;
+        }
+        .sidebar-nav__item--active .sidebar-nav__icon {
           color: var(--color-primary);
         }
         .sidebar-nav__icon {
@@ -114,47 +103,7 @@ export function Sidebar({ navItems, role }: SidebarProps) {
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-        }
-        .sidebar-footer {
-          padding: 12px 8px;
-          border-top: 1px solid var(--color-border);
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-        .sidebar-signout {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 9px 10px;
-          border-radius: 8px;
-          font-size: 14px;
-          font-family: var(--font-inter);
           color: var(--color-grey-blue);
-          background: none;
-          border: none;
-          cursor: pointer;
-          width: 100%;
-          text-align: left;
-          transition: background 0.12s, color 0.12s;
-        }
-        .sidebar-signout:hover {
-          background: #fddde5;
-          color: var(--color-danger);
-        }
-        .sidebar-collapse {
-          font-size: 12px;
-          color: var(--color-grey-blue);
-          padding: 6px 10px;
-          border-radius: 6px;
-          cursor: pointer;
-          background: none;
-          border: none;
-          text-align: left;
-        }
-        .sidebar-collapse:hover {
-          background: var(--color-muted);
-          color: var(--color-dark);
         }
       `}</style>
     </aside>
