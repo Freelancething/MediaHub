@@ -4,6 +4,7 @@ import type { NextAuthConfig } from "next-auth";
 // Used by proxy.ts (middleware) which runs on the Edge runtime
 export const authConfig: NextAuthConfig = {
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
