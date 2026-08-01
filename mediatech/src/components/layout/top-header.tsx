@@ -71,7 +71,7 @@ export function TopHeader({
       {/* Right side */}
       <div className="header-right">
         {/* Wallet info */}
-        <Link href={userRole === "Advertiser" ? "/advertiser/wallet" : (userRole === "Publisher" ? "/publisher/wallet" : "/influencer/wallet")} className="header-wallet hover:opacity-80 transition-opacity">
+        <Link href={userRole === "Advertiser" ? "/advertiser/balance" : (userRole === "Publisher" ? "/publisher/balance" : "/influencer/balance")} className="header-wallet hover:opacity-80 transition-opacity">
           <span className="header-wallet__item">
             Balance: <strong>${balance.toFixed(2)}</strong>
           </span>
@@ -127,10 +127,10 @@ export function TopHeader({
                 <div className="dropdown-divider" />
                 
                 <div className="dropdown-section">
-                  <button className="dropdown-item dropdown-item-wallet">
+                  <Link href={userRole === "Advertiser" ? "/advertiser/balance" : (userRole === "Publisher" ? "/publisher/balance" : "/influencer/balance")} className="dropdown-item dropdown-item-wallet">
                     <span>Balance</span>
                     <ChevronDownIcon className="w-4 h-4 text-grey-blue" />
-                  </button>
+                  </Link>
                   <Link href="/account-settings" className="dropdown-item">
                     Account Settings
                   </Link>

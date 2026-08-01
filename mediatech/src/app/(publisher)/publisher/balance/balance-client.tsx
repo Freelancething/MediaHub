@@ -6,9 +6,10 @@ import {
   WalletIcon, 
   ArrowUpIcon, 
   ArrowDownIcon,
-  BanknotesIcon
+  BanknotesIcon,
+  InformationCircleIcon,
+  ChevronDownIcon
 } from "@heroicons/react/24/outline";
-import { BalanceCards } from "@/components/ui/balance-cards";
 
 interface BalanceClientProps {
   initialBalance: number;
@@ -17,25 +18,28 @@ interface BalanceClientProps {
   transactions: any[];
   currentTab: string;
   onWithdrawalAction: (amount: number, method: string, details: string) => Promise<void>;
+  activeBalanceType?: "main" | "reserved" | "bonus";
 }
 
-export default function BalanceClient({
+export function BalanceClient({
   initialBalance,
   initialReserved,
   initialEarnings,
   transactions,
   currentTab,
   onWithdrawalAction,
+  activeBalanceType = "main"
 }: BalanceClientProps) {
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState<"paypal" | "wire">("paypal");
-  const [amount, setAmount] = useState("50.00");
   const [paypalEmail, setPaypalEmail] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [amount, setAmount] = useState("");
+  
   const [isPending, startTransition] = useTransition();
 
-  async function handleRequestWithdrawal(e: React.FormEvent) {
+  function handleRequestWithdrawal(e: React.FormEvent) {
     e.preventDefault();
     const withdrawValue = parseFloat(amount);
     if (isNaN(withdrawValue) || withdrawValue <= 0 || withdrawValue > initialBalance) {
@@ -59,43 +63,145 @@ export default function BalanceClient({
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header Row */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold font-space text-dark">Balance</h1>
-          <p className="text-sm text-muted font-inter mt-1">Request payouts and check transaction history logs.</p>
-        </div>
-        <button 
-          onClick={() => setIsWithdrawOpen(true)}
-          className="btn btn-primary flex items-center gap-2 font-space"
-          disabled={initialBalance < 50}
-        >
-          <WalletIcon className="w-5 h-5" /> Request Withdrawal
-        </button>
+      {/* Breadcrumb & H1 */}
+      <div className="mb-4 font-inter text-xs text-muted">
+        <span>Home &gt; {activeBalanceType === "reserved" ? "Reserved balance" : activeBalanceType === "bonus" ? "Bonus balance" : "Main balance"}</span>
       </div>
 
-      <BalanceCards 
-        balance={initialBalance}
-        reserved={initialReserved}
-        thirdMetric={initialEarnings}
-        thirdMetricLabel="Lifetime earnings"
-      />
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold font-space text-dark">
+          {activeBalanceType === "reserved" ? "Reserved balance" : activeBalanceType === "bonus" ? "Bonus balance" : "Balance"}
+        </h1>
+      </div>
 
-      {/* Transactions List */}
-      <div className="bg-card border-base rounded-lg p-6">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex gap-4 pb-2 border-b border-muted">
-            <Link href="/publisher/balance?type=ALL" className={`status-tab pb-2 ${currentTab === 'ALL' ? 'active font-bold text-primary' : 'text-muted'}`}>All</Link>
-            <Link href="/publisher/balance?type=DEPOSIT" className={`status-tab pb-2 ${currentTab === 'DEPOSIT' ? 'active font-bold text-primary' : 'text-muted'}`}>Earnings</Link>
-            <Link href="/publisher/balance?type=WITHDRAWAL" className={`status-tab pb-2 ${currentTab === 'WITHDRAWAL' ? 'active font-bold text-primary' : 'text-muted'}`}>Payouts</Link>
+      {/* Accordion Guide Block */}
+      <details open className="faq-details border-base bg-card rounded-lg mb-6" style={{ borderColor: '#E8ECFD' }}>
+        <summary className="font-space font-medium p-4 cursor-pointer flex justify-between items-center list-none" style={{ backgroundColor: '#EEF0FD' }}>
+          <div className="flex items-center gap-3">
+            <span className="help-icon">?</span>
+            <span className="text-primary font-semibold">How it works</span>
+          </div>
+          <ChevronDownIcon className="arrow-icon w-4 h-4 transition-transform text-primary" />
+        </summary>
+        <div className="p-6 border-t border-muted text-sm text-dark leading-relaxed font-inter">
+          <p className="mb-4">Here you can check your publisher&apos;s balance divided into 3 categories:</p>
+          <div className="grid grid-cols-3 gap-6 mb-4">
+            <div>
+              <p className="font-semibold mb-1">• Main balance: <span className="text-muted font-normal">Funds you have earned for completed tasks</span></p>
+            </div>
+            <div>
+              <p className="font-semibold mb-1">• Reserved balance: <span className="text-muted font-normal">Funds that have been reserved as a task payment</span></p>
+              <Link href="/publisher/balance?view=reserved" className="text-primary hover:underline block text-xs mt-1">Learn more</Link>
+            </div>
+            <div>
+              <p className="font-semibold mb-1">• Bonus balance: <span className="text-muted font-normal">Extra funds that may be added for special activities</span></p>
+            </div>
+          </div>
+
+          <p className="font-semibold text-dark mb-4">You will be able to request a payout after you earn at least $60.</p>
+
+          <div className="flex items-center gap-3 p-4 rounded-lg mb-4 border border-primary bg-[#EEF0FD]">
+            <InformationCircleIcon className="w-5 h-5 text-primary flex-shrink-0" />
+            <span className="text-xs">Please note that the final sum you receive will differ from the one you see on your Adsy account. That&apos;s because we charge different commissions for available payment methods.</span>
+          </div>
+
+          <p className="text-xs text-muted mb-3 font-semibold uppercase">The following commissions apply when you make your earnings request:</p>
+          <div className="bg-[#EEF0FD] p-4 rounded-lg text-xs mb-4">
+            <p className="font-semibold mb-1 text-dark">PayPal</p>
+            <ul className="list-disc pl-4 flex flex-col gap-1 text-muted">
+              <li>4.00% - PayPal takes from 2.9% to 6.4% <Link href="#" className="text-primary hover:underline">commissions (learn more here)</Link>; to save you some funds, we&apos;ll take only 4% from your balance and pay PayPal commission on our side, so this way you&apos;ll save on PayPal commission and get payment with NO commission (applies to all publishers). The same 4% commission applies to all other methods to cover the transaction fee.</li>
+              <li>3.90% - the fee Adsy uses for advertising to attract more buyers and ensure you receive higher income (applies to the publishers who&apos;ve joined Adsy after August 1st, 2018).</li>
+            </ul>
+          </div>
+
+          <div className="bg-[#EEF0FD] p-4 rounded-lg text-xs mb-4">
+            <p className="font-semibold mb-1 text-dark">USDT</p>
+            <ul className="list-disc pl-4 flex flex-col gap-1 text-muted">
+              <li>5.45% - this transaction commission applies if you decide to send earnings to your USDT address.</li>
+              <li>3.90% - the fee for Adsy services will still be applied, if applicable.</li>
+            </ul>
+          </div>
+
+          <p className="font-semibold text-dark mt-4 mb-2">Once a request is submitted, it is forwarded to the financial department and goes through several processing stages.</p>
+          <p className="text-xs text-muted mb-4">Once a earnings request is submitted, it is forwarded to the financial department and goes through several processing stages. As a result, there will be a delay between your request and the actual receipt of funds. The payout process begins on the <strong>5th</strong> and <strong>20th</strong> of each month, so please ensure your request is submitted <strong>before these dates</strong> (including 5th and 20th). Payments are typically received between the <strong>5th-10th</strong> and the <strong>20th-25th</strong> of each month.</p>
+
+          <div className="flex items-center gap-3 p-4 rounded-lg border border-primary bg-[#EEF0FD]">
+            <InformationCircleIcon className="w-5 h-5 text-primary flex-shrink-0" />
+            <span className="text-xs">Please note do not send us emails about your earnings request. We see all the requests, and we&apos;ll process them during the payment period without an extra reminder</span>
           </div>
         </div>
-        
+      </details>
+
+      {/* Request Earnings Section Box */}
+      <div className="flex justify-between items-center bg-[#81F5FF20] border border-[#81F5FF60] p-6 rounded-lg mb-6">
+        <div>
+          <h4 className="font-space font-semibold text-dark text-md mb-1">Do you want to get your payments?</h4>
+        </div>
+        <Link 
+          href="/publisher/balance?action=request"
+          className="btn btn-dark font-semibold font-space" 
+          style={{ borderRadius: '8px', padding: '12px 24px', textDecoration: 'none' }}
+        >
+          Request Earnings
+        </Link>
+      </div>
+
+      {/* Grid of Balances */}
+      <div className="grid grid-cols-3 gap-6 mb-8">
+        <Link 
+          href="/publisher/balance?view=main" 
+          className={`card bg-card border-base rounded-lg p-6 flex flex-col justify-between transition-all ${activeBalanceType === 'main' ? 'border-primary shadow-md' : 'hover:border-primary'}`}
+          style={{ borderWidth: activeBalanceType === 'main' ? '2px' : '1px' }}
+        >
+          <div>
+            <span className="text-2xl font-bold text-dark font-space block mb-1">${initialBalance.toFixed(2)}</span>
+            <span className="text-xs text-muted font-inter">Main balance: Funds you have earned for completed tasks</span>
+          </div>
+        </Link>
+
+        <Link 
+          href="/publisher/balance?view=reserved" 
+          className={`card bg-card border-base rounded-lg p-6 flex flex-col justify-between transition-all ${activeBalanceType === 'reserved' ? 'border-primary shadow-md' : 'hover:border-primary'}`}
+          style={{ borderWidth: activeBalanceType === 'reserved' ? '2px' : '1px' }}
+        >
+          <div>
+            <span className="text-2xl font-bold text-dark font-space block mb-1">${initialReserved.toFixed(2)}</span>
+            <span className="text-xs text-muted font-inter">Reserved balance: Funds that have been reserved as a task payment</span>
+          </div>
+        </Link>
+
+        <Link 
+          href="/publisher/balance?view=bonus" 
+          className={`card bg-card border-base rounded-lg p-6 flex flex-col justify-between transition-all ${activeBalanceType === 'bonus' ? 'border-primary shadow-md' : 'hover:border-primary'}`}
+          style={{ borderWidth: activeBalanceType === 'bonus' ? '2px' : '1px' }}
+        >
+          <div>
+            <span className="text-2xl font-bold text-dark font-space block mb-1">${initialEarnings.toFixed(2)}</span>
+            <span className="text-xs text-muted font-inter">Bonus balance: Extra funds that may be added for special activities</span>
+          </div>
+        </Link>
+      </div>
+
+      {/* Transactions List */}
+      <div className="bg-card border-base rounded-lg p-6 mb-8">
+        {/* Search Filter and Transaction tabs */}
+        {activeBalanceType === "main" && (
+          <div className="mb-6">
+            <div className="relative mb-4" style={{ maxWidth: '400px' }}>
+              <input type="text" className="input" placeholder="Task ID or Content order ID" style={{ paddingRight: '36px' }} />
+            </div>
+            <div className="flex gap-2">
+              <button className="btn btn-outline btn-sm bg-[#EEF0FD] border-none text-dark font-semibold">All Payments</button>
+              <button className="btn btn-ghost btn-sm text-muted">Product Payments</button>
+              <button className="btn btn-ghost btn-sm text-muted">Earnings received</button>
+              <button className="btn btn-ghost btn-sm text-muted">Other</button>
+            </div>
+          </div>
+        )}
+
         {transactions.length === 0 ? (
-          <div className="empty-state py-12 flex flex-col items-center justify-center text-center">
-            <WalletIcon className="w-12 h-12 text-muted mb-4" />
-            <p className="font-space font-medium text-dark text-lg mb-1">No transactions found</p>
-            <p className="text-muted text-sm max-w-sm">Complete guest post or link insertion orders to build up your balance.</p>
+          <div className="py-8 text-center text-muted font-inter text-sm">
+            This list is empty. You have no transactions yet.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -103,8 +209,8 @@ export default function BalanceClient({
               <thead>
                 <tr className="border-b border-muted text-muted text-xs uppercase">
                   <th className="pb-3 font-semibold">Date</th>
-                  <th className="pb-3 font-semibold">Description</th>
-                  <th className="pb-3 font-semibold text-right">Amount</th>
+                  <th className="pb-3 font-semibold">Transaction description</th>
+                  <th className="pb-3 font-semibold text-right">Transaction amount</th>
                   <th className="pb-3 font-semibold text-right">Balance</th>
                 </tr>
               </thead>
@@ -168,35 +274,76 @@ export default function BalanceClient({
                   required 
                   min="50" 
                   max={initialBalance}
-                  className="input font-semibold" 
+                  className="input" 
+                  placeholder="Minimum $50.00"
                 />
               </div>
 
               {selectedMethod === "paypal" ? (
                 <div>
                   <label className="text-sm font-medium text-dark block mb-2 font-inter">PayPal Email Address</label>
-                  <input type="email" required value={paypalEmail} onChange={(e) => setPaypalEmail(e.target.value)} placeholder="paypal@example.com" className="input text-xs" />
+                  <input 
+                    type="email" 
+                    value={paypalEmail} 
+                    onChange={(e) => setPaypalEmail(e.target.value)} 
+                    required 
+                    className="input" 
+                    placeholder="name@example.com"
+                  />
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div>
                     <label className="text-sm font-medium text-dark block mb-2 font-inter">Bank Name</label>
-                    <input type="text" required value={bankName} onChange={(e) => setBankName(e.target.value)} placeholder="Chase Manhattan Bank" className="input text-xs" />
+                    <input 
+                      type="text" 
+                      value={bankName} 
+                      onChange={(e) => setBankName(e.target.value)} 
+                      required 
+                      className="input" 
+                      placeholder="Chase Bank"
+                    />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-dark block mb-2 font-inter">IBAN / Account Number</label>
-                    <input type="text" required value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} placeholder="US89 1002 9382 1092 38" className="input text-xs" />
+                    <input 
+                      type="text" 
+                      value={accountNumber} 
+                      onChange={(e) => setAccountNumber(e.target.value)} 
+                      required 
+                      className="input" 
+                      placeholder="US1234567890"
+                    />
                   </div>
                 </div>
               )}
 
-              <button type="submit" disabled={isPending} className="btn btn-primary w-full mt-4" style={{ justifyContent: 'center' }}>
-                Submit Payout Request
+              <button 
+                type="submit" 
+                className="btn btn-primary w-full font-space font-semibold mt-4"
+                disabled={isPending}
+              >
+                {isPending ? "Processing..." : "Submit Withdrawal Request"}
               </button>
             </form>
           </div>
         </div>
       )}
+
+      <style>{`
+        .help-icon {
+          width: 20px;
+          height: 20px;
+          background: #3E4FEA;
+          color: white;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 13px;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import BalanceClient from "./balance-client";
+import { BalanceClient } from "./balance-client";
+import RequestPayoutClient from "./request-payout-client";
 
 export const metadata = {
   title: "My Balance - Adsy",
@@ -9,6 +10,8 @@ export const metadata = {
 
 interface SearchParams {
   type?: string;
+  view?: string;
+  action?: string;
 }
 
 export default async function PublisherBalancePage({
@@ -23,6 +26,8 @@ export default async function PublisherBalancePage({
 
   const resolvedParams = await searchParams;
   const currentTab = resolvedParams.type || "ALL";
+  const activeView = (resolvedParams.view || "main") as "main" | "reserved" | "bonus";
+  const isRequestAction = resolvedParams.action === "request";
 
   // Fetch publisher details
   const publisher = await db.user.findUnique({
@@ -77,6 +82,17 @@ export default async function PublisherBalancePage({
         }
       })
     ]);
+    redirect("/publisher/balance");
+  }
+
+  if (isRequestAction) {
+    return (
+      <RequestPayoutClient 
+        initialBalance={balance}
+        onWithdrawalAction={handleRequestPayoutAction}
+        role="publisher"
+      />
+    );
   }
 
   return (
@@ -87,6 +103,7 @@ export default async function PublisherBalancePage({
       transactions={transactions}
       currentTab={currentTab}
       onWithdrawalAction={handleRequestPayoutAction}
+      activeBalanceType={activeView}
     />
   );
 }
