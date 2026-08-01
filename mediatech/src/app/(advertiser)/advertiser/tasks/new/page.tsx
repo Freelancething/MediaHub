@@ -73,7 +73,7 @@ export default async function NewTaskPage({ searchParams }: PageProps) {
     });
 
     if (!user || user.balance < targetPrice) {
-      redirect("/advertiser/wallet?error=insufficient_funds");
+      redirect("/advertiser/balance?error=insufficient_funds");
     }
 
     // Begin transaction: deduct balance, reserve funds, create task
@@ -135,7 +135,7 @@ export default async function NewTaskPage({ searchParams }: PageProps) {
         {insuﬃcientFunds && (
           <div className="banner banner-promo rounded-lg mt-4 flex items-center justify-between" style={{ backgroundColor: '#FFF4D9' }}>
             <span className="text-xs text-dark font-inter">
-              Your wallet balance (${walletBalance.toFixed(2)}) is insufficient. Please <Link href="/advertiser/wallet" className="text-primary font-semibold hover:underline">top up balance</Link> before booking.
+              Your wallet balance (${walletBalance.toFixed(2)}) is insufficient. Please <Link href="/advertiser/balance" className="text-primary font-semibold hover:underline">top up balance</Link> before booking.
             </span>
           </div>
         )}

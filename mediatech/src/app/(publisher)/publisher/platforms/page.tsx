@@ -9,22 +9,60 @@ import {
   CheckCircleIcon,
   XCircleIcon,
   ClockIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  GlobeAltIcon
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
   title: "My Platforms - Adsy Publisher",
 };
 
-export default async function PublisherPlatformsPage() {
+interface SearchParams {
+  status?: string;
+  query?: string;
+  minPrice?: string;
+  maxPrice?: string;
+}
+
+export default async function PublisherPlatformsPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
   const session = await auth();
-  if (!session?.user) {
+  if (!session?.user?.id) {
     redirect("/login");
   }
 
-  // Fetch publisher platforms and packages from the database
+  const resolvedParams = await searchParams;
+  const currentStatusTab = resolvedParams.status || "ALL";
+  const urlQuery = resolvedParams.query || "";
+  const minPrice = resolvedParams.minPrice || "";
+  const maxPrice = resolvedParams.maxPrice || "";
+
+  // Fetch publisher platforms and packages from the database with active filters
   const platforms = await db.platform.findMany({
-    where: { publisherId: session.user.id },
+    where: {
+      publisherId: session.user.id,
+      ...(currentStatusTab !== "ALL" ? { status: currentStatusTab as any } : {}),
+      ...(urlQuery ? {
+        url: {
+          contains: urlQuery,
+          mode: "insensitive" as const
+        }
+      } : {}),
+      ...(minPrice || maxPrice ? {
+        packages: {
+          some: {
+            type: "ARTICLE_POSTING",
+            price: {
+              ...(minPrice ? { gte: parseFloat(minPrice) } : {}),
+              ...(maxPrice ? { lte: parseFloat(maxPrice) } : {}),
+            }
+          }
+        }
+      } : {})
+    },
     include: { packages: true },
     orderBy: { createdAt: "desc" },
   });
@@ -91,75 +129,64 @@ export default async function PublisherPlatformsPage() {
       {/* Filters & Tabs Section */}
       <div className="bg-card border-base rounded-lg p-6 mb-6">
         {/* Status Tabs */}
-        <div className="status-tabs mb-6">
-          <button className="status-tab active">All (except deleted) <span className="tab-count">{platforms.length}</span></button>
-          <button className="status-tab">Pending indexation <span className="tab-count">0</span></button>
-          <button className="status-tab">Pending specification <span className="tab-count">{platforms.filter(p => p.status === "PENDING").length}</span></button>
-          <button className="status-tab">Pending moderation <span className="tab-count">0</span></button>
-          <button className="status-tab">Approved <span className="tab-count">{platforms.filter(p => p.status === "ACTIVE").length}</span></button>
-          <button className="status-tab">Rejected <span className="tab-count">{platforms.filter(p => p.status === "REJECTED").length}</span></button>
-          <button className="status-tab">On hold <span className="tab-count">0</span></button>
-          <button className="status-tab">Deleted <span className="tab-count">0</span></button>
+        <div className="status-tabs mb-6" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <Link href="/publisher/platforms?status=ALL" className={`status-tab ${currentStatusTab === 'ALL' ? 'active font-bold' : ''}`}>All (except deleted)</Link>
+          <Link href="/publisher/platforms?status=PENDING" className={`status-tab ${currentStatusTab === 'PENDING' ? 'active font-bold' : ''}`}>Pending specification</Link>
+          <Link href="/publisher/platforms?status=ACTIVE" className={`status-tab ${currentStatusTab === 'ACTIVE' ? 'active font-bold' : ''}`}>Approved</Link>
+          <Link href="/publisher/platforms?status=REJECTED" className={`status-tab ${currentStatusTab === 'REJECTED' ? 'active font-bold' : ''}`}>Rejected</Link>
         </div>
 
-        {/* Filter Inputs Grid */}
-        <div className="filter-grid mb-6">
-          <div>
-            <input className="input" type="text" placeholder="Site's URL" />
-          </div>
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="crowdPost" className="rounded border-border text-primary focus:ring-primary" />
-            <label htmlFor="crowdPost" className="text-sm font-inter text-muted">Crowd Post ⓘ</label>
-          </div>
-          <div>
-            <select className="input select text-muted">
-              <option value="">Inventory status: Show all</option>
-            </select>
-          </div>
-          <div>
-            <select className="input select text-muted">
-              <option value="">Site activity: Show all</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="filter-details-row mb-6">
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted font-inter">Price ⓘ</span>
-            <input className="input w-24" type="text" placeholder="15" />
-            <span className="text-muted">-</span>
-            <input className="input w-24" type="text" placeholder="75,000" />
+        {/* Filter Inputs Grid Form */}
+        <form method="GET" action="/publisher/platforms" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <input type="hidden" name="status" value={currentStatusTab} />
+          
+          <div className="filter-grid mb-6" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '16px', alignItems: 'center' }}>
+            <div>
+              <input name="query" className="input" type="text" placeholder="Site's URL" defaultValue={urlQuery} />
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="crowdPost" className="rounded border-border text-primary focus:ring-primary" />
+              <label htmlFor="crowdPost" className="text-sm font-inter text-muted">Crowd Post ⓘ</label>
+            </div>
+            <div>
+              <select className="input select text-muted">
+                <option value="">Inventory status: Show all</option>
+              </select>
+            </div>
+            <div>
+              <select className="input select text-muted">
+                <option value="">Site activity: Show all</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted font-inter">Link attribution type ⓘ</span>
-            <select className="input select w-40">
-              <option value="">All types</option>
-            </select>
+          <div className="filter-details-row mb-6" style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted font-inter">Price ⓘ</span>
+              <input name="minPrice" className="input w-24" type="text" placeholder="15" defaultValue={minPrice} />
+              <span className="text-muted">-</span>
+              <input name="maxPrice" className="input w-24" type="text" placeholder="75,000" defaultValue={maxPrice} />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted font-inter">Link attribution type ⓘ</span>
+              <select className="input select w-40">
+                <option value="">All types</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted font-inter">Service type ⓘ</span>
+              <select className="input select w-56">
+                <option value="">Invite Servicetype Ids (all)</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted font-inter">Service type ⓘ</span>
-            <select className="input select w-56">
-              <option value="">Invite Servicetype Ids (all)</option>
-            </select>
-          </div>
-
-          <div className="radio-options">
-            <label className="flex items-center gap-2 text-sm text-dark font-inter">
-              <input type="radio" name="serviceSelection" defaultChecked />
-              Sites with selected service
-            </label>
-            <label className="flex items-center gap-2 text-sm text-dark font-inter">
-              <input type="radio" name="serviceSelection" />
-              Sites without selected services
-            </label>
-          </div>
-        </div>
-
-        <button className="btn btn-outline" style={{ border: '1.5px solid #3E4FEA', color: '#3E4FEA', fontWeight: 600 }}>
-          Apply filters
-        </button>
+          <button type="submit" className="btn btn-outline" style={{ border: '1.5px solid #3E4FEA', color: '#3E4FEA', fontWeight: 600, width: 'fit-content' }}>
+            Apply filters
+          </button>
+        </form>
       </div>
 
       {/* Results Header */}
@@ -179,7 +206,7 @@ export default async function PublisherPlatformsPage() {
       {platforms.length === 0 ? (
         <div className="card empty-state-container">
           <div className="empty-state">
-            <span className="text-4xl">🌐</span>
+            <GlobeAltIcon className="w-12 h-12 text-muted mb-4" />
             <p className="font-space font-medium text-dark text-lg m-0">No platforms listed yet</p>
             <p className="text-muted max-w-sm text-center">Add your first website to start receiving paid content creation, guest post placement, or link insertion orders.</p>
             <Link href="/publisher/platforms/new" className="btn btn-primary mt-2">
@@ -306,23 +333,6 @@ export default async function PublisherPlatformsPage() {
         .status-tab.active .tab-count {
           background: var(--color-primary);
           color: white;
-        }
-        .filter-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr 1fr;
-          gap: 16px;
-          align-items: center;
-        }
-        .filter-details-row {
-          display: flex;
-          align-items: center;
-          gap: 24px;
-          flex-wrap: wrap;
-        }
-        .radio-options {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
         }
         .platforms-container {
           max-width: 1200px;

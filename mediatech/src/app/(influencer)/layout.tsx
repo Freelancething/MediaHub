@@ -16,7 +16,6 @@ const influencerNavItems = [
   { label: "Demand",           href: "/influencer/demand",   icon: <ChartBarIcon className="w-4 h-4" /> },
   { label: "Tasks",            href: "/influencer/tasks",    icon: <ClipboardDocumentListIcon className="w-4 h-4" /> },
   { label: "Referral Program", href: "/influencer/referral", icon: <ShareIcon className="w-4 h-4" /> },
-  { label: "Wallet",           href: "/influencer/wallet",   icon: <WalletIcon className="w-4 h-4" /> },
 ];
 
 export default async function InfluencerLayout({ children }: { children: React.ReactNode }) {
@@ -46,6 +45,7 @@ export default async function InfluencerLayout({ children }: { children: React.R
           reserved={user?.reserved ?? 0}
           bonus={user?.bonus ?? 0}
           userName={user?.name ?? session.user.name ?? ""}
+          userRole="Influencer"
           userAvatar={user?.avatar ?? session.user.image ?? undefined}
         />
         <main className="page-body">

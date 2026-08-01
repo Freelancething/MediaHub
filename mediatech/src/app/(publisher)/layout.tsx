@@ -16,7 +16,6 @@ const publisherNavItems = [
   { label: "Demand",           href: "/publisher/demand",    icon: <ChartBarIcon className="w-4 h-4" /> },
   { label: "Tasks",            href: "/publisher/tasks",     icon: <ClipboardDocumentListIcon className="w-4 h-4" /> },
   { label: "Referral Program", href: "/publisher/referral",  icon: <ShareIcon className="w-4 h-4" /> },
-  { label: "Wallet",           href: "/publisher/wallet",    icon: <WalletIcon className="w-4 h-4" /> },
 ];
 
 export default async function PublisherLayout({ children }: { children: React.ReactNode }) {
@@ -46,6 +45,7 @@ export default async function PublisherLayout({ children }: { children: React.Re
           reserved={user?.reserved ?? 0}
           bonus={user?.bonus ?? 0}
           userName={user?.name ?? session.user.name ?? ""}
+          userRole="Publisher"
           userAvatar={user?.avatar ?? session.user.image ?? undefined}
         />
         <main className="page-body">

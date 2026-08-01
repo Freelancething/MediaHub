@@ -10,6 +10,7 @@ export type NavItem = {
   label: string;
   href: string;
   icon: React.ReactNode;
+  subItems?: { label: string; href: string }[];
 };
 
 type SidebarProps = {
@@ -36,16 +37,36 @@ export function Sidebar({ navItems, role }: SidebarProps) {
       {/* Navigation */}
       <nav className="sidebar-nav">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+          const hasChildren = item.subItems && item.subItems.length > 0;
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn("sidebar-nav__item", isActive && "sidebar-nav__item--active")}
-            >
-              <span className="sidebar-nav__icon">{item.icon}</span>
-              <span className="sidebar-nav__label">{item.label}</span>
-            </Link>
+            <div key={item.href} className="sidebar-nav__group">
+              <Link
+                href={item.href}
+                className={cn("sidebar-nav__item", isActive && "sidebar-nav__item--active")}
+              >
+                <span className="sidebar-nav__icon">{item.icon}</span>
+                <span className="sidebar-nav__label">{item.label}</span>
+              </Link>
+              {hasChildren && isActive && (
+                <div className="sidebar-nav__sublist">
+                  {item.subItems!.map((sub) => {
+                    // Check if current path matches subItem href (exact match)
+                    const isSubActive = pathname === sub.href;
+                    return (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        className={cn("sidebar-nav__subitem", isSubActive && "sidebar-nav__subitem--active")}
+                      >
+                        <span className="sidebar-nav__bullet">•</span>
+                        <span>{sub.label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           );
         })}
       </nav>
@@ -104,6 +125,41 @@ export function Sidebar({ navItems, role }: SidebarProps) {
           justify-content: center;
           flex-shrink: 0;
           color: var(--color-grey-blue);
+        }
+        .sidebar-nav__sublist {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          padding-left: 28px;
+          margin-top: 4px;
+        }
+        .sidebar-nav__subitem {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 12px;
+          font-size: 13.5px;
+          font-weight: 500;
+          font-family: var(--font-inter);
+          color: var(--color-grey-blue);
+          text-decoration: none;
+          border-radius: 6px;
+          transition: background 0.12s, color 0.12s;
+        }
+        .sidebar-nav__subitem:hover {
+          background: #f5f8fa;
+          color: var(--color-dark);
+        }
+        .sidebar-nav__subitem--active {
+          color: var(--color-primary);
+          font-weight: 600;
+        }
+        .sidebar-nav__bullet {
+          font-size: 14px;
+          color: var(--color-grey-blue);
+        }
+        .sidebar-nav__subitem--active .sidebar-nav__bullet {
+          color: var(--color-primary);
         }
       `}</style>
     </aside>

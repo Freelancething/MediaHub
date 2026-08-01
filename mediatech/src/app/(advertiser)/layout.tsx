@@ -17,16 +17,21 @@ import {
 import { db } from "@/lib/db";
 
 const advertiserNavItems = [
-  { label: "Search for Sites",       href: "/advertiser/sites",            icon: <MagnifyingGlassIcon className="w-4 h-4" /> },
-  { label: "Article Posting",        href: "/advertiser/sites?type=ARTICLE_POSTING", icon: <DocumentTextIcon className="w-4 h-4" /> },
-  { label: "Link Insertion",         href: "/advertiser/sites?type=LINK_INSERTION",  icon: <LinkIcon className="w-4 h-4" /> },
-  { label: "Press Release",          href: "/advertiser/sites?type=PRESS_RELEASE",   icon: <NewspaperIcon className="w-4 h-4" /> },
+  { 
+    label: "Search for Sites", 
+    href: "/advertiser/sites", 
+    icon: <MagnifyingGlassIcon className="w-4 h-4" />,
+    subItems: [
+      { label: "Article Posting", href: "/advertiser/sites?type=ARTICLE_POSTING" },
+      { label: "Link Insertion",  href: "/advertiser/sites?type=LINK_INSERTION" },
+      { label: "Press Release",   href: "/advertiser/sites?type=PRESS_RELEASE" },
+    ]
+  },
   { label: "Search for Influencers", href: "/advertiser/influencers",      icon: <UsersIcon className="w-4 h-4" /> },
   { label: "Media Partner List",     href: "/advertiser/partners",         icon: <UserGroupIcon className="w-4 h-4" /> },
   { label: "My Projects",            href: "/advertiser/projects",         icon: <FolderOpenIcon className="w-4 h-4" /> },
   { label: "Tasks",                  href: "/advertiser/tasks",            icon: <ClipboardDocumentListIcon className="w-4 h-4" /> },
   { label: "Content Purchase",       href: "/advertiser/content-purchase", icon: <ShoppingBagIcon className="w-4 h-4" /> },
-  { label: "Wallet",                 href: "/advertiser/wallet",           icon: <WalletIcon className="w-4 h-4" /> },
 ];
 
 export default async function AdvertiserLayout({ children }: { children: React.ReactNode }) {
@@ -57,6 +62,7 @@ export default async function AdvertiserLayout({ children }: { children: React.R
           reserved={user?.reserved ?? 0}
           bonus={user?.bonus ?? 0}
           userName={user?.name ?? session.user.name ?? ""}
+          userRole="Advertiser"
           userAvatar={user?.avatar ?? session.user.image ?? undefined}
         />
         <main className="page-body">

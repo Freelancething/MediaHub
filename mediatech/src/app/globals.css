@@ -52,7 +52,7 @@ body {
   font-family: var(--font-space-grotesk);
   background-color: var(--color-app);
   color: var(--color-dark);
-  line-height: 1.5;
+  line-height: 1.35;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -125,16 +125,16 @@ body {
   z-index: 30;
   background-color: var(--color-card);
   border-bottom: 1px solid var(--color-border);
-  height: 56px;
+  height: 52px;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 20px;
   justify-content: space-between;
 }
 
 .page-body {
   flex: 1;
-  padding: 24px;
+  padding: 20px;
 }
 
 /* ─────────────────────────────────────────────
@@ -145,8 +145,8 @@ body {
 .card {
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 16px;
 }
 
 /* Badges */
@@ -220,26 +220,30 @@ body {
 /* Input */
 .input {
   width: 100%;
-  background: var(--color-app);
-  border: 1px solid var(--color-border);
+  background: #FFFFFF;
+  border: 1.5px solid var(--color-border);
   border-radius: 8px;
-  padding: 9px 12px;
+  padding: 10px 14px;
   font-size: 14px;
   font-family: var(--font-inter);
   color: var(--color-dark);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .input::placeholder { color: var(--color-grey-blue); }
-.input:focus { border-color: var(--color-primary); }
+.input:focus { 
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(62, 79, 234, 0.1);
+}
 
 /* Select */
 .select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23677F9B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%233E4FEA'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4.5 15.75l7.5-7.5 7.5 7.5' /%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 40px;
 }
 
 /* ─────────────────────────────────────────────
@@ -247,9 +251,10 @@ body {
    ───────────────────────────────────────────── */
 .status-tabs {
   display: flex;
-  gap: 0;
+  gap: 8px;
   border-bottom: 1px solid var(--color-border);
   overflow-x: auto;
+  flex-wrap: nowrap !important;
   scrollbar-width: none;
 }
 .status-tabs::-webkit-scrollbar { display: none; }
@@ -257,8 +262,8 @@ body {
 .status-tab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
+  gap: 4px;
+  padding: 8px 6px;
   font-size: 13px;
   font-weight: 500;
   font-family: var(--font-inter);
@@ -271,6 +276,7 @@ body {
   border-top: none;
   border-left: none;
   border-right: none;
+  flex-shrink: 0;
 }
 
 .status-tab:hover { color: var(--color-dark); }

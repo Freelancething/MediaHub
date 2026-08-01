@@ -13,6 +13,7 @@ type TopHeaderProps = {
   reserved?: number;
   bonus?: number;
   userName?: string;
+  userRole?: string;
   userAvatar?: string;
   notificationCount?: number;
 };
@@ -23,6 +24,7 @@ export function TopHeader({
   reserved = 0,
   bonus = 0,
   userName = "",
+  userRole = "Media Partner",
   userAvatar,
   notificationCount = 0,
 }: TopHeaderProps) {
@@ -69,7 +71,7 @@ export function TopHeader({
       {/* Right side */}
       <div className="header-right">
         {/* Wallet info */}
-        <div className="header-wallet">
+        <Link href={userRole === "Advertiser" ? "/advertiser/wallet" : (userRole === "Publisher" ? "/publisher/wallet" : "/influencer/wallet")} className="header-wallet hover:opacity-80 transition-opacity">
           <span className="header-wallet__item">
             Balance: <strong>${balance.toFixed(2)}</strong>
           </span>
@@ -81,7 +83,7 @@ export function TopHeader({
           <span className="header-wallet__item">
             Bonus: <strong>${bonus.toFixed(2)}</strong>
           </span>
-        </div>
+        </Link>
 
         {/* Actions */}
         <div className="header-actions">
@@ -118,7 +120,7 @@ export function TopHeader({
             {dropdownOpen && (
               <div className="profile-dropdown">
                 <div className="dropdown-user-info">
-                  <div className="user-role">Media Partner</div>
+                  <div className="user-role">{userRole}</div>
                   <div className="user-name">{userName || "Seshu Kumari"}</div>
                 </div>
                 
