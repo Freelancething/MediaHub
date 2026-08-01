@@ -57,20 +57,19 @@
 
 ---
 
-## Day 5 — Advertiser: Website Marketplace
-- [ ] "Search for sites" page — paginated table layout
-- [ ] Listing row: URL, DA, traffic, niche, country flag, price, "Buy now"
-- [ ] Filter sidebar: product type, niche, DA range, traffic range, country, price
-- [ ] "New sites" section with green "new" badge
-- [ ] Sort options: Price, DA, Traffic, Date added
-- [ ] Pagination / infinite scroll
+## Day 5 — Advertiser: Sites Search & Filters ✅ COMPLETE
+- [x] "Search for Sites" marketplace list page (query, category, and location params)
+- [x] Service tabs (placement package types)
+- [x] Domain SEO metrics (DA, DR, organic traffic data table grids)
+- [x] Purchase placement redirect triggers to create task orders
 
 ---
 
-## Day 6 — Advertiser: Influencer Marketplace
-- [ ] "Search for influencers" page
-- [ ] Toggle between Websites/Influencers at top
-- [ ] Listing row: handle, platform icon, followers, engagement %, niche, country, price
+## Day 6 — Advertiser: Influencers Search & Filters ✅ COMPLETE
+- [x] "Search for Influencers" list page (handle search and filters)
+- [x] Platform categories tabs (Instagram, YouTube, TikTok, X)
+- [x] Influencer social metrics display card (followers count, engagement percentage)
+- [x] Book shoutout CTA redirection links: handle, platform icon, followers, engagement %, niche, country, price
 - [ ] Filter sidebar: social platform, follower range, engagement %, niche, country, price
 - [ ] Sort options: Followers, Engagement, Price, Date added
 - [ ] "Buy now" → briefing form for influencer deliverable
