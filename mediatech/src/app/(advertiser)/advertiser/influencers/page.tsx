@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "Search for Influencers - Adsy Advertiser",
+  title: "Search for Influencers - MediaHub",
 };
 
 interface SearchParams {

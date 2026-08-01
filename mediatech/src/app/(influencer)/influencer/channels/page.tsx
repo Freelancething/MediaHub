@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "My Channels - Adsy Influencer",
+  title: "My Channels - MediaHub",
 };
 
 export default async function InfluencerChannelsPage() {

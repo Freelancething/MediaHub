@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "Demand - Adsy Influencer",
+  title: "Demand - MediaHub",
 };
 
 export default async function InfluencerDemandPage() {

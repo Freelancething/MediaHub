@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "My Platforms - Adsy Publisher",
+  title: "My Platforms - MediaHub",
 };
 
 interface SearchParams {

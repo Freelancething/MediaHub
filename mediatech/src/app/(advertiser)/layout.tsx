@@ -52,6 +52,16 @@ export default async function AdvertiserLayout({ children }: { children: React.R
     select: { balance: true, reserved: true, bonus: true, name: true, avatar: true },
   });
 
+  const notificationCount = await db.notification.count({
+    where: { userId: session.user.id!, isRead: false },
+  });
+
+  const recentNotifications = await db.notification.findMany({
+    where: { userId: session.user.id! },
+    orderBy: { createdAt: "desc" },
+    take: 5,
+  });
+
   return (
     <div className="dashboard-shell">
       <Sidebar navItems={advertiserNavItems} role="ADVERTISER" />
@@ -64,6 +74,8 @@ export default async function AdvertiserLayout({ children }: { children: React.R
           userName={user?.name ?? session.user.name ?? ""}
           userRole="Advertiser"
           userAvatar={user?.avatar ?? session.user.image ?? undefined}
+          notificationCount={notificationCount}
+          recentNotifications={recentNotifications as any}
         />
         <main className="page-body">
           {children}

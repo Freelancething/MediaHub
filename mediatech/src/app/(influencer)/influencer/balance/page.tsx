@@ -1,11 +1,11 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import { BalanceClient } from "./balance-client";
-import RequestPayoutClient from "./request-payout-client";
+import { BalanceClient } from "@/components/balance/balance-client";
+import RequestPayoutClient from "@/components/balance/request-payout-client";
 
 export const metadata = {
-  title: "My Balance - Adsy",
+  title: "My Balance - MediaHub",
 };
 
 interface SearchParams {
@@ -29,27 +29,28 @@ export default async function InfluencerBalancePage({
   const activeView = (resolvedParams.view || "main") as "main" | "reserved" | "bonus";
   const isRequestAction = resolvedParams.action === "request";
 
-  // Fetch influencer details
   const influencer = await db.user.findUnique({
     where: { id: session.user.id },
-    select: { balance: true, reserved: true, earnings: true }
+    select: { balance: true, reserved: true, earnings: true },
   });
 
   const balance = influencer?.balance ?? 0;
   const reserved = influencer?.reserved ?? 0;
   const earnings = influencer?.earnings ?? 0;
 
-  // Fetch transaction history
   const transactions = await db.transaction.findMany({
     where: {
       userId: session.user.id,
-      ...(currentTab !== "ALL" ? { type: currentTab as any } : {})
+      ...(currentTab !== "ALL" ? { type: currentTab as any } : {}),
     },
     orderBy: { createdAt: "desc" },
   });
 
-  // Server Action to request payout
-  async function handleRequestPayoutAction(amountValue: number, methodLabel: string, details: string) {
+  async function handleRequestPayoutAction(
+    amountValue: number,
+    methodLabel: string,
+    details: string
+  ) {
     "use server";
     const session = await auth();
     if (!session?.user?.id) return;
@@ -58,45 +59,60 @@ export default async function InfluencerBalancePage({
 
     const user = await db.user.findUnique({
       where: { id: session.user.id },
-      select: { balance: true }
+      select: { balance: true },
     });
 
     if (!user || user.balance < amountValue) {
       throw new Error("Insufficient funds");
     }
 
-    const finalBalance = user.balance - amountValue;
-
-    // Transaction reduces balance, creates transaction log
+    // Create a pending withdrawal request — balance held, NOT deducted until admin marks PAID
     await db.$transaction([
-      db.user.update({
-        where: { id: session.user.id },
-        data: { balance: finalBalance }
+      db.withdrawal.create({
+        data: {
+          userId: session.user.id,
+          amount: amountValue,
+          method: methodLabel,
+          details,
+          status: "PENDING",
+        },
       }),
       db.transaction.create({
         data: {
           userId: session.user.id,
           type: "WITHDRAWAL",
           amount: -amountValue,
-          note: `Withdrawal payout requested via ${methodLabel} (${details})`
-        }
-      })
+          note: `Withdrawal request submitted via ${methodLabel}`,
+        },
+      }),
     ]);
+
+    // Notify influencer their request was received
+    await db.notification.create({
+      data: {
+        userId: session.user.id,
+        type: "PAYMENT",
+        title: "Withdrawal request submitted",
+        body: `Your request to withdraw $${amountValue.toFixed(2)} via ${methodLabel} is being reviewed.`,
+        link: "/influencer/balance",
+      },
+    });
+
     redirect("/influencer/balance");
   }
 
   if (isRequestAction) {
     return (
-      <RequestPayoutClient 
+      <RequestPayoutClient
         initialBalance={balance}
         onWithdrawalAction={handleRequestPayoutAction}
-        role="influencer"
+        basePath="influencer"
       />
     );
   }
 
   return (
-    <BalanceClient 
+    <BalanceClient
       initialBalance={balance}
       initialReserved={reserved}
       initialEarnings={earnings}
@@ -104,6 +120,7 @@ export default async function InfluencerBalancePage({
       currentTab={currentTab}
       onWithdrawalAction={handleRequestPayoutAction}
       activeBalanceType={activeView}
+      basePath="influencer"
     />
   );
 }

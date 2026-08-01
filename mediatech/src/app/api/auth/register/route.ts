@@ -8,6 +8,7 @@ const RegisterSchema = z.object({
   email:    z.string().email(),
   password: z.string().min(8).max(100),
   role:     z.enum(["ADVERTISER", "PUBLISHER", "INFLUENCER"]),
+  ref:      z.string().optional(),  // referrer userId
 });
 
 export async function POST(req: NextRequest) {
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, email, password, role } = parsed.data;
+    const { name, email, password, role, ref } = parsed.data;
 
     // Check if email already taken
     const existing = await db.user.findUnique({
@@ -45,6 +46,16 @@ export async function POST(req: NextRequest) {
       data: { name, email, password: hashed, role },
       select: { id: true, email: true, name: true, role: true },
     });
+
+    // Wire referral if a valid referrer was provided
+    if (ref && ref !== user.id) {
+      const referrer = await db.user.findUnique({ where: { id: ref }, select: { id: true } });
+      if (referrer) {
+        await db.referral.create({
+          data: { referrerId: referrer.id, referredId: user.id, commission: 0 },
+        });
+      }
+    }
 
     return NextResponse.json({ user }, { status: 201 });
   } catch (err) {

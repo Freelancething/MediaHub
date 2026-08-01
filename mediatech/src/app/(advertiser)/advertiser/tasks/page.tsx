@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { 
   DocumentTextIcon, 
   BriefcaseIcon, 
@@ -10,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "Tasks - Adsy Advertiser",
+  title: "Tasks - MediaHub",
 };
 
 interface PageProps {
@@ -136,10 +137,13 @@ export default async function AdvertiserTasksPage({ searchParams }: PageProps) {
                 <div className="flex justify-between items-center mb-4">
                   <div>
                     <span className="text-xs text-muted block mb-1">Placement Platform</span>
-                    <span className="font-space font-semibold text-dark text-sm">{task.platformId ? task.platform?.url : task.channel?.handle}</span>
+                    <Link href={`/advertiser/tasks/${task.id}`} className="font-space font-semibold text-primary hover:underline text-sm">
+                      {task.platformId ? task.platform?.url : task.channel?.handle}
+                    </Link>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right flex items-center gap-3">
                     <span className="badge badge-pending text-xs">{task.status}</span>
+                    <Link href={`/advertiser/tasks/${task.id}`} className="text-xs text-primary hover:underline font-inter">View →</Link>
                   </div>
                 </div>
 

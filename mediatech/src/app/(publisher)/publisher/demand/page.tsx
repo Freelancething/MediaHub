@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "Demand map - Adsy",
+  title: "Demand Map - MediaHub",
 };
 
 export default async function PublisherDemandPage() {

@@ -241,12 +241,16 @@ export default function TasksClient({
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <span className="text-xs text-muted block mb-1">Website URL</span>
-                    <span className="font-space font-bold text-dark">{task.platform?.url}</span>
+                    <Link href={`/publisher/tasks/${task.id}`} className="font-space font-bold text-primary hover:underline">
+                      {task.platform?.url}
+                    </Link>
                   </div>
-                  <div>
+                  <div className="flex items-center gap-3">
                     <span className="badge badge-pending text-xs">{task.status}</span>
+                    <Link href={`/publisher/tasks/${task.id}`} className="text-xs text-primary hover:underline font-inter">View →</Link>
                   </div>
                 </div>
+
 
                 <div className="grid grid-cols-2 gap-6 pt-4 border-t border-muted mb-4 text-sm font-inter">
                   <div>

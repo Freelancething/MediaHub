@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRightIcon, ShoppingBagIcon, GlobeAltIcon, DevicePhoneMobileIcon } from "@heroicons/react/24/outline";
 
 type Role = "ADVERTISER" | "PUBLISHER" | "INFLUENCER";
@@ -29,6 +29,8 @@ const ROLES = [
 
 export function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const refCode = searchParams.get("ref") ?? undefined;
   const [step, setStep] = useState<1 | 2>(1);
   const [role, setRole] = useState<Role>("ADVERTISER");
   const [name, setName] = useState("");
@@ -49,7 +51,7 @@ export function RegisterForm() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password, role, ref: refCode }),
       });
 
       const data = await res.json();

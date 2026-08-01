@@ -357,3 +357,31 @@ body {
     margin-left: 0;
   }
 }
+
+/* ─────────────────────────────────────────────
+   SKELETON SHIMMER
+   ───────────────────────────────────────────── */
+@keyframes skeleton-pulse {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 25%,
+    #f0f4f8 50%,
+    var(--color-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  display: block;
+}
+
+/* ─────────────────────────────────────────────
+   PRINT
+   ───────────────────────────────────────────── */
+@media print {
+  .sidebar, .top-header { display: none; }
+  .main-content { margin-left: 0; }
+}

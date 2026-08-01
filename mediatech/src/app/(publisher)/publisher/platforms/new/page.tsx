@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "Add Website - Adsy Publisher",
+  title: "Add Website - MediaHub",
 };
 
 export default async function NewPlatformPage() {

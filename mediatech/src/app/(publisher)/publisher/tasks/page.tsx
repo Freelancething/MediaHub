@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import TasksClient from "./tasks-client";
 
 export const metadata = {
-  title: "Tasks - Adsy Publisher",
+  title: "Tasks - MediaHub Publisher",
 };
 
 interface PageProps {
@@ -78,9 +78,14 @@ export default async function PublisherTasksPage({ searchParams }: PageProps) {
     "use server";
     const taskId = formData.get("taskId") as string;
     const { db } = await import("@/lib/db");
+    const task = await db.task.findUnique({ where: { id: taskId } });
+    if (!task) return;
     await db.task.update({
       where: { id: taskId },
       data: { status: "IN_PROGRESS", acceptedAt: new Date() }
+    });
+    await db.notification.create({
+      data: { userId: task.advertiserId, type: "TASK_UPDATE", title: "Order accepted", body: "Your placement order was accepted and work has started.", link: `/advertiser/tasks/${taskId}` }
     });
     redirect("/publisher/tasks?status=IN_PROGRESS");
   }
@@ -107,6 +112,17 @@ export default async function PublisherTasksPage({ searchParams }: PageProps) {
         data: { status: "REJECTED" }
       })
     ]);
+
+    await db.notification.create({
+      data: {
+        userId: task.advertiserId,
+        type: "TASK_UPDATE",
+        title: "Order declined",
+        body: "Your placement order was declined. Your funds have been refunded.",
+        link: `/advertiser/tasks/${taskId}`
+      }
+    });
+
     redirect("/publisher/tasks?status=REJECTED");
   }
 

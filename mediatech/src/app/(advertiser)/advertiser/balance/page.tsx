@@ -1,10 +1,10 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import BalanceClient from "./balance-client";
+import { BalanceClient } from "@/components/balance/balance-client";
 
 export const metadata = {
-  title: "Balance - Adsy",
+  title: "Balance - MediaHub",
 };
 
 interface SearchParams {
@@ -59,21 +59,13 @@ export default async function AdvertiserBalancePage({
 
     const { db } = await import("@/lib/db");
     
-    // Retrieve current user balance
-    const user = await db.user.findUnique({
-      where: { id: session.user.id },
-      select: { balance: true }
-    });
-
-    const currentBalance = user?.balance ?? 0;
     const finalDeposit = amountValue;
-    const finalBalance = currentBalance + finalDeposit;
 
-    // Transaction updates balance and inserts transaction history record
+    // Transaction atomically increments balance to prevent race conditions
     await db.$transaction([
       db.user.update({
         where: { id: session.user.id },
-        data: { balance: finalBalance }
+        data: { balance: { increment: finalDeposit } }
       }),
       db.transaction.create({
         data: {
@@ -84,17 +76,28 @@ export default async function AdvertiserBalancePage({
         }
       })
     ]);
+
+    // Notify user of successful top-up
+    await db.notification.create({
+      data: {
+        userId: session.user.id,
+        type: "PAYMENT",
+        title: "Balance topped up",
+        body: `$${finalDeposit.toFixed(2)} was successfully added to your balance via ${methodLabel}.`,
+        link: "/advertiser/balance",
+      }
+    });
   }
 
   return (
-    <BalanceClient 
+    <BalanceClient
       initialBalance={balance}
       initialReserved={reserved}
-      initialBonus={bonus}
+      initialEarnings={bonus}
       transactions={transactions}
       currentTab={currentTab}
-      urlQuery={urlQuery}
       onAddFundsAction={handleAddFundsAction}
+      basePath="advertiser"
     />
   );
 }

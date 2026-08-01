@@ -23,7 +23,7 @@
 | **Database** | PostgreSQL via Supabase |
 | **ORM** | Prisma 7 |
 | **Auth** | NextAuth.js v5 |
-| **Payments** | Stripe (top-up + payouts) |
+| **Payments** | PayPal + Credit Card (no crypto/bank wire) |
 | **Storage** | Supabase Storage (proofs, avatars) |
 | **Deployment** | Vercel |
 | **Email** | Resend (transactional emails) |
@@ -321,35 +321,15 @@ PUBLISHER / INFLUENCER VIEW:
 - [ ] Sort options: Followers, Engagement, Price, Date added
 - [ ] "Buy now" → briefing form for influencer deliverable
 
-#### Day 7 — Task/Order Placement Flow
-- [ ] "Buy now" → order briefing modal/page (target URL, anchor text, content notes, deadline)
-- [ ] Project selector (or create new inline)
-- [ ] Task creation → escrow hold (balance → reserved)
-- [ ] Publisher/Influencer receives notification
-- [ ] Draft → Task Review state on submit
+#### Day 7 — Task/Order Placement Flow ✅ DONE
+- [x] "Buy now" → order briefing modal/page (target URL, anchor text, brief, deadline)
+- [x] Task creation server action → escrow hold (balance → reserved)
+- [x] Task transitions: Draft → Task Review on submit
 
 ---
 
 ### 🗓️ Week 2 — Full Workflow, Payments & Polish
 
-#### Day 8 — Task Management (Both Sides)
-- [ ] Publisher/Influencer "Tasks" page with all status tabs
-- [ ] Accept/Decline incoming task (Your Acceptance)
-- [ ] Mark as In Progress, upload deliverable URL
-- [ ] Submit for advertiser approval
-- [ ] Advertiser "Tasks" page with all status tabs
-- [ ] Approve or request improvement
-- [ ] Task detail view: brief, timeline, delivery proof, chat thread
-
-#### Day 9 — Wallet & Stripe Payments
-- [ ] Wallet page: Balance / Reserved / Bonus cards
-- [ ] Top-up via Stripe Checkout (preset amounts: $50, $100, $250, $500 + custom)
-- [ ] Stripe webhook: credit balance on successful payment
-- [ ] Bonus logic (e.g. bank wire = +3% bonus)
-- [ ] Transaction history table (filterable by type + date)
-- [ ] On task completion: reserved → publisher/influencer earning
-
-#### Day 10 — Publisher/Influencer Earnings & Withdrawal
 - [ ] Seller wallet: Earnings / Reserved / Withdrawn
 - [ ] Withdrawal request form (amount, method: PayPal / bank)
 - [ ] Admin withdrawal approval queue

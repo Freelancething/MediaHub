@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ShoppingBagIcon, GlobeAltIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "New Purchase Placement - Adsy Advertiser",
+  title: "New Placement Order - MediaHub",
 };
 
 interface PageProps {
@@ -30,19 +30,30 @@ export default async function NewTaskPage({ searchParams }: PageProps) {
       where: { id: platformId },
       include: { packages: true },
     });
-    const mainPkg = platform?.packages.find((p: any) => p.type === "ARTICLE_POSTING");
-    targetPrice = mainPkg?.price || 10.00;
+    // Guard: only allow orders on ACTIVE platforms
+    if (platform && platform.status !== "ACTIVE") platform = null;
+    const mainPkg = platform?.packages.find((p: any) => p.isActive && p.type === "ARTICLE_POSTING")
+      ?? platform?.packages.find((p: any) => p.isActive);  // fallback to first active pkg
+    targetPrice = mainPkg?.price ?? 0;
   } else if (channelId) {
     channel = await db.channel.findUnique({
       where: { id: channelId },
       include: { packages: true },
     });
-    const mainPkg = channel?.packages.find((p: any) => p.type === "POST");
-    targetPrice = mainPkg?.price || 25.00;
+    // Guard: only allow orders on ACTIVE channels
+    if (channel && channel.status !== "ACTIVE") channel = null;
+    const mainPkg = channel?.packages.find((p: any) => p.isActive && p.type === "POST")
+      ?? channel?.packages.find((p: any) => p.isActive);  // fallback to first active pkg
+    targetPrice = mainPkg?.price ?? 0;
   }
 
   if (!platform && !channel) {
     redirect("/advertiser/sites");
+  }
+
+  // Guard: cannot place a $0 order
+  if (targetPrice <= 0) {
+    redirect("/advertiser/sites?error=no_packages");
   }
 
   // Fetch advertiser wallet details
@@ -77,7 +88,7 @@ export default async function NewTaskPage({ searchParams }: PageProps) {
     }
 
     // Begin transaction: deduct balance, reserve funds, create task
-    await db.$transaction([
+    const [, task] = await db.$transaction([
       db.user.update({
         where: { id: session.user.id },
         data: {
@@ -96,12 +107,32 @@ export default async function NewTaskPage({ searchParams }: PageProps) {
           anchorText,
           targetUrl,
           price: targetPrice,
-          platformFee: targetPrice * 0.1, // 10% platform commission
+          platformFee: targetPrice * 0.1,
           sellerEarning: targetPrice * 0.9,
           status: "TASK_REVIEW"
         }
       })
     ]);
+
+    // Notify the seller
+    const { createNotification } = await import("@/lib/notifications");
+    if (platform) {
+      await createNotification({
+        userId: platform.publisherId,
+        type: "TASK_UPDATE",
+        title: "New placement order received",
+        body: `You have a new order for ${platform.url}. Review and accept it to get started.`,
+        link: `/publisher/tasks/${task.id}`,
+      });
+    } else if (channel) {
+      await createNotification({
+        userId: channel.influencerId,
+        type: "TASK_UPDATE",
+        title: "New brand deal received",
+        body: `You have a new brand deal request for @${channel.handle}. Review and accept to begin.`,
+        link: `/influencer/tasks/${task.id}`,
+      });
+    }
 
     redirect("/advertiser/tasks");
   }

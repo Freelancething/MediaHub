@@ -13,7 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const metadata = {
-  title: "Search for Sites - Adsy Advertiser",
+  title: "Search for Sites - MediaHub",
 };
 
 interface SearchParams {
@@ -73,13 +73,6 @@ export default async function AdvertiserSitesPage({
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Promo Banner */}
-      <div className="banner banner-promo rounded-lg mb-6 flex items-center justify-between" style={{ backgroundColor: '#FFF4D9', borderBottom: '1px solid #F5A72340' }}>
-        <div className="flex items-center gap-2">
-          <span>🎁</span>
-          <span>Limited time offer! Get 3% bonus for topping up via Bank Wire Transfer. <Link href="/advertiser/wallet" className="text-primary font-semibold hover:underline">Add funds now.</Link></span>
-        </div>
-      </div>
 
       {/* Header Row */}
       <div className="flex justify-between items-center mb-6">

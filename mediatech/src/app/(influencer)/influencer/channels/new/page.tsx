@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Add Channel - Adsy Influencer",
+  title: "Add Channel - MediaHub",
 };
 
 export default async function NewChannelPage() {
