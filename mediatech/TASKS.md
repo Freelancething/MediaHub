@@ -57,22 +57,13 @@
 
 ---
 
-## Day 5 — Advertiser: Sites Search & Filters ✅ COMPLETE
-- [x] "Search for Sites" marketplace list page (query, category, and location params)
-- [x] Service tabs (placement package types)
-- [x] Domain SEO metrics (DA, DR, organic traffic data table grids)
-- [x] Purchase placement redirect triggers to create task orders
-
----
-
-## Day 6 — Advertiser: Influencers Search & Filters ✅ COMPLETE
-- [x] "Search for Influencers" list page (handle search and filters)
-- [x] Platform categories tabs (Instagram, YouTube, TikTok, X)
-- [x] Influencer social metrics display card (followers count, engagement percentage)
-- [x] Book shoutout CTA redirection links: handle, platform icon, followers, engagement %, niche, country, price
-- [ ] Filter sidebar: social platform, follower range, engagement %, niche, country, price
-- [ ] Sort options: Followers, Engagement, Price, Date added
-- [ ] "Buy now" → briefing form for influencer deliverable
+## Day 7 — Advertiser: Purchase Placement Brief Form ✅ COMPLETE
+- [x] Purchase page template routing platformId / channelId query params
+- [x] Summary block displaying selected platform information and total cost
+- [x] Target URL, Anchor Text, and Content Brief fields inputs
+- [x] Insufficient wallet funds detection banner alerts
+- [x] Submit database logic (decrement balance, increment reserved escrows, and save new Task record)
+- [x] Sent placement tasks tracking list layout page
 
 ---
 
