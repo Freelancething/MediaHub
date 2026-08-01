@@ -76,14 +76,13 @@
 
 ---
 
-## Day 8 — Task Management (Both Sides)
-- [ ] Publisher/Influencer "Tasks" page with all status tabs
-- [ ] Accept/Decline incoming task (Your Acceptance)
-- [ ] Mark as In Progress, upload deliverable URL
-- [ ] Submit for advertiser approval
-- [ ] Advertiser "Tasks" page with all status tabs
-- [ ] Approve or request improvement
-- [ ] Task detail view: brief, timeline, delivery proof, chat thread
+## Day 8 — Advertiser & Publisher: Tasks Management Workﬂow ✅ COMPLETE
+- [x] Publisher tasks dashboard list sorting (status tab params)
+- [x] Accept / Reject order triggers (escrow refunds to advertiser balance on rejection)
+- [x] Live URL deliverable submission form
+- [x] Advertiser tasks status lists (Reviewing, In Progress, Waiting for Approval, Completed)
+- [x] Release escrow transactions (decrements advertiser reserved funds, credits publisher wallet balance and lifetime earnings)
+- [x] Request improvements notes submissions (returns tasks to revisions status) detail view: brief, timeline, delivery proof, chat thread
 
 ---
 
