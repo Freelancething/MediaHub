@@ -10,8 +10,11 @@ import {
   XCircleIcon,
   ClockIcon,
   ChevronRightIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  PencilSquareIcon,
+  PencilIcon
 } from "@heroicons/react/24/outline";
+import { PlatformActionsDropdown } from "@/components/publisher/platform-actions-dropdown";
 
 export const metadata = {
   title: "My Platforms - MediaHub",
@@ -233,65 +236,76 @@ export default async function PublisherPlatformsPage({
                   <span className="flex items-center gap-1 text-success text-sm font-medium">
                     <span className="w-2 h-2 rounded-full bg-success"></span> Active
                   </span>
-                  <button className="btn btn-outline flex items-center gap-2 btn-sm text-dark font-inter" style={{ padding: '6px 12px' }}>
-                    📝 Edit
-                  </button>
-                  <button className="btn btn-outline btn-sm text-dark px-3">•••</button>
+                  <Link href={`/publisher/platforms/new?edit=${platform.id}`} className="btn btn-outline flex items-center gap-2 btn-sm text-dark font-inter" style={{ padding: '6px 12px' }}>
+                    <PencilSquareIcon className="w-3.5 h-3.5" /> Edit
+                  </Link>
+                  <PlatformActionsDropdown platformId={platform.id} url={platform.url} />
                 </div>
               </div>
 
               {/* Data Table */}
-              <div className="grid grid-cols-3 gap-6 pt-4 border-t border-muted">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-gray-200">
                 {/* Col 1 */}
-                <div className="flex flex-col gap-4">
+                <div className="space-y-4">
                   <div>
-                    <span className="text-xs text-muted block mb-1">Status</span>
-                    <span className={platform.status === "ACTIVE" ? "text-success font-medium" : platform.status === "REJECTED" ? "text-danger font-medium" : "text-warning font-medium"}>
+                    <span className="text-xs font-semibold block mb-1 text-gray-500" style={{ color: '#64748b' }}>Status</span>
+                    <span className="font-bold text-sm" style={{ color: platform.status === "ACTIVE" ? '#059669' : platform.status === "REJECTED" ? '#dc2626' : '#d97706' }}>
                       {platform.status === "ACTIVE" ? "Approved" : platform.status === "REJECTED" ? "Rejected" : "Pending specification"}
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted block mb-1">Confirmation status</span>
-                    <span className="font-semibold text-warning text-sm">Owner</span>
+                    <span className="text-xs font-semibold block mb-1" style={{ color: '#64748b' }}>Confirmation status</span>
+                    <span className="font-bold text-sm" style={{ color: '#d97706' }}>Owner</span>
                   </div>
                 </div>
 
                 {/* Col 2 */}
-                <div className="flex flex-col gap-4">
+                <div className="space-y-4">
                   <div>
-                    <span className="text-xs text-muted block mb-1">Completion rate</span>
-                    <span className="text-dark font-medium text-sm">N/A</span>
+                    <span className="text-xs font-semibold block mb-1" style={{ color: '#64748b' }}>Completion rate</span>
+                    <span className="font-bold text-sm" style={{ color: '#1e293b' }}>N/A</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted block mb-1">Tasks with initial Domain & Price</span>
-                    <span className="text-dark font-medium text-sm">N/A</span>
+                    <span className="text-xs font-semibold block mb-1" style={{ color: '#64748b' }}>Tasks with initial Domain & Price</span>
+                    <span className="font-bold text-sm" style={{ color: '#1e293b' }}>N/A</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted block mb-1">Avg lifetime of links</span>
-                    <span className="text-dark font-medium text-sm">N/A</span>
+                    <span className="text-xs font-semibold block mb-1" style={{ color: '#64748b' }}>Avg lifetime of links</span>
+                    <span className="font-bold text-sm" style={{ color: '#1e293b' }}>N/A</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted block mb-1">TAT</span>
-                    <span className="text-dark font-medium text-sm">N/A</span>
+                    <span className="text-xs font-semibold block mb-1" style={{ color: '#64748b' }}>TAT</span>
+                    <span className="font-bold text-sm" style={{ color: '#1e293b' }}>N/A</span>
                   </div>
                 </div>
 
                 {/* Col 3: Packages */}
-                <div className="flex flex-col gap-4">
-                  <div className="border-b border-muted pb-2">
-                    <span className="text-xs text-muted block mb-1">Article Posting</span>
+                <div className="flex flex-col">
+                  <div className="border-b border-gray-200 pb-2 mb-3">
+                    <span className="text-xs font-semibold block" style={{ color: '#64748b' }}>Article Posting</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted">Content placement</span>
-                    <span className="font-semibold text-dark">${platform.packages.find(p => p.type === "ARTICLE_POSTING")?.price?.toFixed(2) || "10.00"} 📝</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted">Writing & placement</span>
-                    <span className="font-semibold text-dark">${((platform.packages.find(p => p.type === "ARTICLE_POSTING")?.price || 10.00) + 15).toFixed(2)} 📝</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted">Special topic</span>
-                    <span className="font-semibold text-dark">N/A 📝</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-medium" style={{ color: '#475569' }}>Content placement</span>
+                      <span className="font-bold font-space flex items-center gap-1.5" style={{ color: '#0f172a' }}>
+                        ${platform.packages.find(p => p.type === "ARTICLE_POSTING")?.price?.toFixed(2) || "10.00"} 
+                        <PencilIcon className="w-3.5 h-3.5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-medium" style={{ color: '#475569' }}>Writing & placement</span>
+                      <span className="font-bold font-space flex items-center gap-1.5" style={{ color: '#0f172a' }}>
+                        ${((platform.packages.find(p => p.type === "ARTICLE_POSTING")?.price || 10.00) + 15).toFixed(2)} 
+                        <PencilIcon className="w-3.5 h-3.5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="font-medium" style={{ color: '#475569' }}>Special topic</span>
+                      <span className="font-bold font-space flex items-center gap-1.5" style={{ color: '#0f172a' }}>
+                        N/A 
+                        <PencilIcon className="w-3.5 h-3.5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

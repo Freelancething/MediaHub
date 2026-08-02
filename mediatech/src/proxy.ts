@@ -24,7 +24,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
 };
 
 const AUTH_ROUTES   = ["/login", "/register", "/forgot-password", "/reset-password"];
-const PUBLIC_ROUTES = ["/", "/api/auth"];
+const PUBLIC_ROUTES = ["/", "/api/auth", "/blog", "/solutions", "/podcasts", "/media-kit", "/faq", "/contact", "/terms", "/privacy"];
 
 export default auth((req) => {
   const { nextUrl } = req;

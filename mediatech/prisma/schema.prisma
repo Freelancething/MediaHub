@@ -97,8 +97,10 @@ model User {
   emailVerified DateTime?
   password      String?
   name          String?
+  image         String?
   avatar        String?
   role          Role      @default(ADVERTISER)
+  isSuspended   Boolean   @default(false)
   bio           String?
   country       String?
   phone         String?

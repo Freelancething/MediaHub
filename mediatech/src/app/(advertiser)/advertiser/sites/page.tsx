@@ -205,42 +205,44 @@ export default async function AdvertiserSitesPage({
               </div>
 
               {/* Stats & Service Pricing Info */}
-              <div className="grid grid-cols-3 gap-6 pt-4 border-t border-muted">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
                 {/* Col 1: SEO Metrics */}
-                <div className="flex flex-col gap-4">
+                <div className="space-y-4">
                   <div>
-                    <span className="text-xs text-muted block mb-1">Domain Authority (DA)</span>
-                    <span className="text-dark font-bold text-md font-space">{platform.da}</span>
+                    <span className="text-xs font-medium text-slate-400 block mb-1">Domain Authority (DA)</span>
+                    <span className="text-slate-800 font-bold text-base font-space">{platform.da}</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted block mb-1">Domain Rating (DR)</span>
-                    <span className="text-dark font-bold text-md font-space">{platform.dr}</span>
+                    <span className="text-xs font-medium text-slate-400 block mb-1">Domain Rating (DR)</span>
+                    <span className="text-slate-800 font-bold text-base font-space">{platform.dr}</span>
                   </div>
                 </div>
 
                 {/* Col 2: Traffic Metrics */}
-                <div className="flex flex-col gap-4">
+                <div className="space-y-4">
                   <div>
-                    <span className="text-xs text-muted block mb-1">Monthly Organic Traffic</span>
-                    <span className="text-dark font-bold text-md font-space">{platform.traffic.toLocaleString()}</span>
+                    <span className="text-xs font-medium text-slate-400 block mb-1">Monthly Organic Traffic</span>
+                    <span className="text-slate-800 font-bold text-base font-space">{platform.traffic.toLocaleString()}</span>
                   </div>
                   <div>
-                    <span className="text-xs text-muted block mb-1">Google Indexation</span>
-                    <span className="text-success text-sm font-medium">Indexed</span>
+                    <span className="text-xs font-medium text-slate-400 block mb-1">Google Indexation</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 text-sm font-semibold inline-block">Indexed</span>
                   </div>
                 </div>
 
                 {/* Col 3: Pricing Packages */}
-                <div className="flex flex-col gap-4">
-                  <div className="border-b border-muted pb-2">
-                    <span className="text-xs text-muted block mb-1">Available Placements</span>
+                <div className="flex flex-col justify-between">
+                  <div className="border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+                    <span className="text-xs font-medium text-slate-400 block">Available Placements</span>
                   </div>
-                  {platform.packages.map((pkg) => (
-                    <div key={pkg.id} className="flex justify-between items-center text-sm font-inter">
-                      <span className="text-muted">{pkg.type === 'ARTICLE_POSTING' ? 'Article Placement' : pkg.type === 'LINK_INSERTION' ? 'Link Insertion' : 'Press Release'}</span>
-                      <span className="font-semibold text-dark">${pkg.price.toFixed(2)}</span>
-                    </div>
-                  ))}
+                  <div className="space-y-2.5">
+                    {platform.packages.map((pkg) => (
+                      <div key={pkg.id} className="flex items-center justify-between text-sm font-inter">
+                        <span className="text-slate-600 font-medium">{pkg.type === 'ARTICLE_POSTING' ? 'Article Placement' : pkg.type === 'LINK_INSERTION' ? 'Link Insertion' : 'Press Release'}</span>
+                        <span className="font-bold text-slate-900 font-space">${pkg.price.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
