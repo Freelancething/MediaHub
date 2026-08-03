@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const ownerEmail = process.env.OWNER_EMAIL || "papanns19@gmail.com";
+    const ownerEmail = process.env.OWNER_EMAIL || "mediahubworks@gmail.com";
     const notificationSubject = `🎙️ New Podcast Guest Application: ${name} (${company || "Independent"})`;
 
     const emailHtml = `

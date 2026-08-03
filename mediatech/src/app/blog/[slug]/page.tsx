@@ -128,8 +128,8 @@ export default function BlogPostDetailPage() {
       {/* 2. MAIN CONTENT LAYOUT */}
       <section className="py-12 w-full px-6 sm:px-8 lg:px-12">
         {/* Hero Featured Image */}
-        <div className="rounded-3xl overflow-hidden shadow-xl mb-12 border border-[#EAF1F6] max-h-[520px]">
-          <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+        <div className="rounded-3xl overflow-hidden shadow-xl mb-12 border border-[#EAF1F6]">
+          <img src={post.featuredImage} alt={post.title} className="w-full h-auto rounded-3xl" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">

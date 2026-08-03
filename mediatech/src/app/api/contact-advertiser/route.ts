@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const ownerEmail = process.env.OWNER_EMAIL || "papanns19@gmail.com";
+    const ownerEmail = process.env.OWNER_EMAIL || "mediahubworks@gmail.com";
     const notificationSubject = `📩 New Advertiser Contact Inquiry from ${name}`;
     const fullPhone = phone ? `${countryCode || "+91"} ${phone}` : "Not provided";
 

@@ -194,34 +194,38 @@ export default async function AdvertiserInfluencersPage({
               </div>
 
               {/* Stats & Service Pricing Info */}
-              <div className="grid grid-cols-3 gap-6 pt-4 border-t border-muted">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5 border-t border-slate-100 dark:border-slate-800 items-start">
                 {/* Col 1 */}
                 <div className="flex flex-col gap-4">
                   <div>
-                    <span className="text-xs text-muted block mb-1">Followers</span>
-                    <span className="text-dark font-bold text-md font-space">{channel.followers.toLocaleString()}</span>
+                    <span className="text-xs font-medium text-muted block mb-1">Followers</span>
+                    <span className="text-dark font-semibold text-base font-space">{channel.followers.toLocaleString()}</span>
                   </div>
                 </div>
 
                 {/* Col 2 */}
                 <div className="flex flex-col gap-4">
                   <div>
-                    <span className="text-xs text-muted block mb-1">Engagement Rate</span>
-                    <span className="text-dark font-bold text-md font-space">{channel.engagement}%</span>
+                    <span className="text-xs font-medium text-muted block mb-1">Engagement Rate</span>
+                    <span className="text-dark font-semibold text-base font-space">{channel.engagement}%</span>
                   </div>
                 </div>
 
                 {/* Col 3: Pricing Packages */}
-                <div className="flex flex-col gap-4">
-                  <div className="border-b border-muted pb-2">
-                    <span className="text-xs text-muted block mb-1">Available Placements</span>
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-medium text-muted block mb-1">Available Placements</span>
+                  <div className="flex flex-col gap-2">
+                    {channel.packages && channel.packages.length > 0 ? (
+                      channel.packages.map((pkg) => (
+                        <div key={pkg.id} className="flex justify-between items-center text-sm py-1.5 px-3 bg-white rounded-md border border-slate-200">
+                          <span className="text-slate-600 font-medium capitalize">{pkg.type.toLowerCase()} placement</span>
+                          <span className="font-semibold text-dark font-space">${pkg.price.toFixed(2)}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <span className="text-slate-400 text-sm italic">No packages listed</span>
+                    )}
                   </div>
-                  {channel.packages.map((pkg) => (
-                    <div key={pkg.id} className="flex justify-between items-center text-sm font-inter">
-                      <span className="text-muted">{pkg.type} placement</span>
-                      <span className="font-semibold text-dark">${pkg.price.toFixed(2)}</span>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
