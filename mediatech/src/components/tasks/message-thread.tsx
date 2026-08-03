@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 interface Message {
@@ -24,6 +25,7 @@ export function MessageThread({
   taskId,
   onSendMessage,
 }: MessageThreadProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [text, setText] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -31,6 +33,14 @@ export function MessageThread({
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    // 5 seconds polling fallback to refresh server-side messages
+    const timer = setInterval(() => {
+      router.refresh();
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [router]);
 
   function handleSend(e: React.FormEvent) {
     e.preventDefault();

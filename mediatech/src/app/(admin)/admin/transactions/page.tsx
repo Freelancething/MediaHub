@@ -43,10 +43,10 @@ export default async function AdminTransactionsPage({ searchParams }: { searchPa
   const totalPages = Math.ceil(total / perPage);
 
   // Summary stats
-  const revenue = totals.find(t => t.type === "TOPUP")?._sum.amount ?? 0;
-  const payouts = totals.find(t => t.type === "WITHDRAWAL")?._sum.amount ?? 0;
-  const refunds = totals.find(t => t.type === "REFUND")?._sum.amount ?? 0;
-  const earnings = totals.find(t => t.type === "EARNING")?._sum.amount ?? 0;
+  const revenue = totals.find((t: any) => t.type === "TOPUP")?._sum.amount ?? 0;
+  const payouts = totals.find((t: any) => t.type === "WITHDRAWAL")?._sum.amount ?? 0;
+  const refunds = totals.find((t: any) => t.type === "REFUND")?._sum.amount ?? 0;
+  const earnings = totals.find((t: any) => t.type === "EARNING")?._sum.amount ?? 0;
 
   return (
     <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -96,7 +96,7 @@ export default async function AdminTransactionsPage({ searchParams }: { searchPa
             <tbody>
               {transactions.length === 0 ? (
                 <tr><td colSpan={5} className="px-5 py-12 text-center text-muted text-sm">No transactions found</td></tr>
-              ) : transactions.map((tx) => {
+              ) : transactions.map((tx: any) => {
                 const cfg = TYPE_CONFIG[tx.type] ?? TYPE_CONFIG.COMMISSION;
                 const isPositive = ["TOPUP", "EARNING", "BONUS", "REFUND"].includes(tx.type);
                 return (

@@ -167,7 +167,7 @@ export default async function AdvertiserInfluencersPage({
         </div>
       ) : (
         <div className="platforms-grid flex flex-col gap-6">
-          {channels.map((channel) => (
+          {channels.map((channel: any) => (
             <div key={channel.id} className="card bg-card border-base rounded-lg p-6 relative">
               <div className="flex justify-between items-start mb-6">
                 <div>
@@ -216,7 +216,7 @@ export default async function AdvertiserInfluencersPage({
                   <span className="text-xs font-medium text-muted block mb-1">Available Placements</span>
                   <div className="flex flex-col gap-2">
                     {channel.packages && channel.packages.length > 0 ? (
-                      channel.packages.map((pkg) => (
+                      channel.packages.map((pkg: any) => (
                         <div key={pkg.id} className="flex justify-between items-center text-sm py-1.5 px-3 bg-white rounded-md border border-slate-200">
                           <span className="text-slate-600 font-medium capitalize">{pkg.type.toLowerCase()} placement</span>
                           <span className="font-semibold text-dark font-space">${pkg.price.toFixed(2)}</span>

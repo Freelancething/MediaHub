@@ -24,7 +24,7 @@ export default async function AdvertiserPartnersPage({ searchParams }: { searchP
   });
 
   // Fetch partner details
-  const partnerIds = saved.map(s => s.partnerId);
+  const partnerIds = saved.map((s: any) => s.partnerId);
   const [publishers, influencers] = await Promise.all([
     db.user.findMany({
       where: { id: { in: partnerIds }, role: "PUBLISHER" },
@@ -36,8 +36,8 @@ export default async function AdvertiserPartnersPage({ searchParams }: { searchP
     }),
   ]);
 
-  const publisherMap = Object.fromEntries(publishers.map(p => [p.id, p]));
-  const influencerMap = Object.fromEntries(influencers.map(i => [i.id, i]));
+  const publisherMap = Object.fromEntries(publishers.map((p: any) => [p.id, p]));
+  const influencerMap = Object.fromEntries(influencers.map((i: any) => [i.id, i]));
 
   async function removePartner(formData: FormData) {
     "use server";
@@ -82,7 +82,7 @@ export default async function AdvertiserPartnersPage({ searchParams }: { searchP
         </div>
       ) : (
         <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
-          {saved.map((s) => {
+          {saved.map((s: any) => {
             const pub = publisherMap[s.partnerId];
             const inf = influencerMap[s.partnerId];
             const site = pub?.platforms[0];

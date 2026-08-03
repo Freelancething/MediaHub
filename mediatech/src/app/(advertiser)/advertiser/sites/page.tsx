@@ -178,7 +178,7 @@ export default async function AdvertiserSitesPage({
         </div>
       ) : (
         <div className="platforms-grid flex flex-col gap-6">
-          {platforms.map((platform) => (
+          {platforms.map((platform: any) => (
             <div key={platform.id} className="card bg-card border-base rounded-lg p-6 relative">
               <div className="flex justify-between items-start mb-6">
                 <div>
@@ -236,7 +236,7 @@ export default async function AdvertiserSitesPage({
                     <span className="text-xs font-medium text-slate-400 block">Available Placements</span>
                   </div>
                   <div className="space-y-2.5">
-                    {platform.packages.map((pkg) => (
+                    {platform.packages.map((pkg: any) => (
                       <div key={pkg.id} className="flex items-center justify-between text-sm font-inter">
                         <span className="text-slate-600 font-medium">{pkg.type === 'ARTICLE_POSTING' ? 'Article Placement' : pkg.type === 'LINK_INSERTION' ? 'Link Insertion' : 'Press Release'}</span>
                         <span className="font-bold text-slate-900 font-space">${pkg.price.toFixed(2)}</span>

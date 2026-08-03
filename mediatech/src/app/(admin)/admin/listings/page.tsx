@@ -114,7 +114,7 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
               <p className="font-space font-semibold text-dark">All caught up!</p>
               <p className="text-sm text-muted font-inter mt-1">No websites pending review.</p>
             </div>
-          ) : pendingPlatforms.map((p) => (
+          ) : pendingPlatforms.map((p: any) => (
             <div key={p.id} className="card bg-card border-base rounded-xl p-5">
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
@@ -125,7 +125,7 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
               </div>
 
               <div className="grid grid-cols-4 gap-3 mb-4 text-center">
-                {[["DA", p.da], ["DR", p.dr], ["Traffic", p.traffic.toLocaleString()], ["Niche", p.niche]].map(([label, val]) => (
+                {[["DA", p.da], ["DR", p.dr], ["Traffic", p.traffic.toLocaleString()], ["Niche", p.niche]].map(([label, val]: any) => (
                   <div key={label as string} className="bg-app rounded-lg p-3">
                     <p className="text-xs text-muted font-inter mb-0.5">{label}</p>
                     <p className="text-sm font-bold font-space text-dark">{val}</p>
@@ -137,7 +137,7 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
                 <div className="mb-4">
                   <p className="text-xs font-semibold text-muted font-inter mb-2 uppercase tracking-wide">Packages</p>
                   <div className="flex flex-wrap gap-2">
-                    {p.packages.map((pkg) => (
+                    {p.packages.map((pkg: any) => (
                       <span key={pkg.id} className="text-xs font-inter px-2.5 py-1 bg-[#EEF0FD] text-primary rounded-full font-semibold">
                         {pkg.type.replace("_", " ")} — ${pkg.price}
                       </span>
@@ -175,7 +175,7 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
               <p className="font-space font-semibold text-dark">All caught up!</p>
               <p className="text-sm text-muted font-inter mt-1">No channels pending review.</p>
             </div>
-          ) : pendingChannels.map((c) => (
+          ) : pendingChannels.map((c: any) => (
             <div key={c.id} className="card bg-card border-base rounded-xl p-5">
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
@@ -186,7 +186,7 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
               </div>
 
               <div className="grid grid-cols-4 gap-3 mb-4 text-center">
-                {[["Followers", c.followers.toLocaleString()], ["Engagement", `${c.engagement}%`], ["Niche", c.niche], ["Country", c.country]].map(([label, val]) => (
+                {[["Followers", c.followers.toLocaleString()], ["Engagement", `${c.engagement}%`], ["Niche", c.niche], ["Country", c.country]].map(([label, val]: any) => (
                   <div key={label as string} className="bg-app rounded-lg p-3">
                     <p className="text-xs text-muted font-inter mb-0.5">{label}</p>
                     <p className="text-sm font-bold font-space text-dark">{val}</p>
@@ -198,7 +198,7 @@ export default async function AdminListingsPage({ searchParams }: { searchParams
                 <div className="mb-4">
                   <p className="text-xs font-semibold text-muted font-inter mb-2 uppercase tracking-wide">Packages</p>
                   <div className="flex flex-wrap gap-2">
-                    {c.packages.map((pkg) => (
+                    {c.packages.map((pkg: any) => (
                       <span key={pkg.id} className="text-xs font-inter px-2.5 py-1 bg-[#EEF0FD] text-primary rounded-full font-semibold">
                         {pkg.type} — ${pkg.price}
                       </span>

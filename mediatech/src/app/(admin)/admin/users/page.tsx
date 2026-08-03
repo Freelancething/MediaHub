@@ -98,7 +98,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
       redirect("/admin/users?error=cannot_delete_self");
     }
 
-    await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx: any) => {
       // 1. Delete user notifications
       await tx.notification.deleteMany({ where: { userId } });
 
@@ -119,7 +119,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
         where: { OR: [{ advertiserId: userId }, { sellerId: userId }] },
         select: { id: true }
       });
-      const taskIds = userTasks.map(t => t.id);
+      const taskIds = userTasks.map((t: any) => t.id);
 
       if (taskIds.length > 0) {
         await tx.message.deleteMany({ where: { taskId: { in: taskIds } } });
@@ -129,7 +129,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
 
       // 6. Delete platforms and their packages
       const platforms = await tx.platform.findMany({ where: { publisherId: userId }, select: { id: true } });
-      const platformIds = platforms.map(p => p.id);
+      const platformIds = platforms.map((p: any) => p.id);
       if (platformIds.length > 0) {
         await tx.package.deleteMany({ where: { platformId: { in: platformIds } } });
         await tx.platform.deleteMany({ where: { id: { in: platformIds } } });
@@ -137,7 +137,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
 
       // 7. Delete channels and their channel packages
       const channels = await tx.channel.findMany({ where: { influencerId: userId }, select: { id: true } });
-      const channelIds = channels.map(c => c.id);
+      const channelIds = channels.map((c: any) => c.id);
       if (channelIds.length > 0) {
         await tx.channelPackage.deleteMany({ where: { channelId: { in: channelIds } } });
         await tx.channel.deleteMany({ where: { id: { in: channelIds } } });
@@ -223,9 +223,9 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
             <tbody>
               {users.length === 0 ? (
                 <tr><td colSpan={8} className="px-5 py-12 text-center text-muted font-inter text-sm">No users found</td></tr>
-              ) : users.map((u) => {
+              ) : users.map((u: any) => {
                 const roleStyle = ROLE_COLORS[u.role] ?? ROLE_COLORS.ADMIN;
-                const isGoogle = u.accounts.some(a => a.provider === "google");
+                const isGoogle = u.accounts.some((a: any) => a.provider === "google");
                 const isManual = !!u.password;
 
                 const activity = u.role === "ADVERTISER"

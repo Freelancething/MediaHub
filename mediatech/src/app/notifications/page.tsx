@@ -56,7 +56,7 @@ export default async function NotificationsPage() {
     redirect(link || "/notifications");
   }
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter((n: any) => !n.isRead).length;
 
   const role = (session.user as any).role as string;
   const balanceHref =
@@ -107,7 +107,7 @@ export default async function NotificationsPage() {
           </div>
         ) : (
           <div className="divide-y divide-border">
-            {notifications.map((notif) => {
+            {notifications.map((notif: any) => {
               const cfg = TYPE_CONFIG[notif.type] ?? TYPE_CONFIG.SYSTEM;
               const Icon = cfg.icon;
               return (

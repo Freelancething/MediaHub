@@ -100,9 +100,9 @@ export default async function AdvertiserProjectsPage({ searchParams }: { searchP
         </div>
       ) : (
         <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
-          {projects.map((proj) => {
-            const completed = proj.tasks.filter(t => t.status === "COMPLETED").length;
-            const active = proj.tasks.filter(t => ["IN_PROGRESS", "YOUR_APPROVAL", "IMPROVEMENT"].includes(t.status)).length;
+          {projects.map((proj: any) => {
+            const completed = proj.tasks.filter((t: any) => t.status === "COMPLETED").length;
+            const active = proj.tasks.filter((t: any) => ["IN_PROGRESS", "YOUR_APPROVAL", "IMPROVEMENT"].includes(t.status)).length;
             const total = proj._count.tasks;
             const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -124,7 +124,7 @@ export default async function AdvertiserProjectsPage({ searchParams }: { searchP
 
                 {/* Stats */}
                 <div className="flex gap-3 mb-4 text-center">
-                  {[["Total", total], ["Active", active], ["Done", completed]].map(([label, val]) => (
+                  {[["Total", total], ["Active", active], ["Done", completed]].map(([label, val]: any) => (
                     <div key={label as string} className="flex-1 bg-app rounded-lg py-2">
                       <p className="text-sm font-bold font-space text-dark">{val}</p>
                       <p className="text-xs text-muted font-inter">{label}</p>

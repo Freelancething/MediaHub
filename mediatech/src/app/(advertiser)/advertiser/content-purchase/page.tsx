@@ -61,7 +61,7 @@ export default async function AdvertiserContentPurchasePage({ searchParams }: { 
               <label className="text-xs font-semibold text-muted font-inter block mb-1.5 uppercase tracking-wide">Niche</label>
               <select name="niche" defaultValue={nicheFilter} className="input text-sm">
                 <option value="">All niches</option>
-                {niches.map(n => <option key={n.niche} value={n.niche}>{n.niche}</option>)}
+                {niches.map((n: any) => <option key={n.niche} value={n.niche}>{n.niche}</option>)}
               </select>
             </div>
 
@@ -96,7 +96,7 @@ export default async function AdvertiserContentPurchasePage({ searchParams }: { 
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {packages.map((pkg) => (
+              {packages.map((pkg: any) => (
                 <div key={pkg.id} className="card bg-card border-base rounded-xl p-5 flex items-center justify-between gap-4 hover:shadow-md transition-shadow">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">

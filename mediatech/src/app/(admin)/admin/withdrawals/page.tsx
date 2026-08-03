@@ -63,6 +63,14 @@ export default async function AdminWithdrawalsPage({ searchParams }: { searchPar
         link: "/publisher/balance",
       },
     });
+
+    try {
+      const { notifyWithdrawalProcessed } = await import("@/lib/notifications");
+      await notifyWithdrawalProcessed(wd.userId, wd.amount, wd.method, "PAID", wd.adminNote);
+    } catch (err) {
+      console.error(err);
+    }
+
     redirect("/admin/withdrawals?status=PAID");
   }
 
@@ -91,11 +99,19 @@ export default async function AdminWithdrawalsPage({ searchParams }: { searchPar
       db.user.update({ where: { id: wd.userId }, data: { balance: { increment: wd.amount } } }),
     ]);
     await db.notification.create({ data: { userId: wd.userId, type: "SYSTEM", title: "Withdrawal request rejected", body: note ? `Your withdrawal was rejected: ${note}. $${wd.amount.toFixed(2)} has been returned to your balance.` : `Your withdrawal of $${wd.amount.toFixed(2)} was rejected. Funds returned to your balance.`, link: "/publisher/balance" } });
+    
+    try {
+      const { notifyWithdrawalProcessed } = await import("@/lib/notifications");
+      await notifyWithdrawalProcessed(wd.userId, wd.amount, wd.method, "REJECTED", note);
+    } catch (err) {
+      console.error(err);
+    }
+
     redirect("/admin/withdrawals?status=REJECTED");
   }
 
-  const pendingCount = counts.find(c => c.status === "PENDING")?._count.id ?? 0;
-  const pendingTotal = counts.find(c => c.status === "PENDING")?._sum.amount ?? 0;
+  const pendingCount = counts.find((c: any) => c.status === "PENDING")?._count.id ?? 0;
+  const pendingTotal = counts.find((c: any) => c.status === "PENDING")?._sum.amount ?? 0;
 
   return (
     <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
@@ -112,7 +128,7 @@ export default async function AdminWithdrawalsPage({ searchParams }: { searchPar
       {/* Status Tabs */}
       <div className="flex gap-1 mb-6">
         {["ALL", "PENDING", "PROCESSING", "PAID", "REJECTED"].map((s) => {
-          const count = s !== "ALL" ? (counts.find(c => c.status === s)?._count.id ?? 0) : withdrawals.length;
+          const count = s !== "ALL" ? (counts.find((c: any) => c.status === s)?._count.id ?? 0) : withdrawals.length;
           return (
             <Link key={s} href={`/admin/withdrawals?status=${s}`}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-inter transition-colors flex items-center gap-1.5 ${statusFilter === s ? "bg-primary text-white" : "bg-app text-muted border border-border hover:text-dark"}`}>
@@ -131,7 +147,7 @@ export default async function AdminWithdrawalsPage({ searchParams }: { searchPar
             <p className="font-space font-semibold text-dark">No withdrawal requests</p>
             <p className="text-sm text-muted font-inter mt-1">in this status</p>
           </div>
-        ) : withdrawals.map((wd) => {
+        ) : withdrawals.map((wd: any) => {
           const sc = STATUS_CONFIG[wd.status];
           const StatusIcon = sc.icon;
           const isPending = wd.status === "PENDING";

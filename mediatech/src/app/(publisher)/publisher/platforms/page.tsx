@@ -73,24 +73,72 @@ export default async function PublisherPlatformsPage({
   return (
     <div className="platforms-container">
       {/* 2FA Reminder Banner */}
-      <div className="banner banner-info rounded-lg mb-4 flex items-center justify-between">
+      <div id="banner-2fa-reminder" className="banner banner-info rounded-lg mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="info-icon">ℹ</span>
           <span>Get more protection by adding Two-Factor Authentication (2FA) via Google Authenticator</span>
         </div>
-        <button className="text-muted hover:text-dark">×</button>
+        <button 
+          id="btn-dismiss-2fa"
+          className="text-muted hover:text-dark cursor-pointer font-bold px-2"
+        >
+          ×
+        </button>
       </div>
 
       {/* Moderation Warning Banner */}
-      {platforms.some(p => p.status === "REJECTED") && (
-        <div className="banner banner-promo rounded-lg mb-6 flex items-center justify-between">
+      {platforms.some((p: any) => p.status === "REJECTED") && (
+        <div id="banner-moderation-rejected" className="banner banner-promo rounded-lg mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="warning-icon">⚠️</span>
             <span>Unfortunately, one or several of your sites didn&apos;t pass the moderation. We recommend you to join our partner platform - Magenet - to earn money from your sites by placing contextual ads on them.</span>
           </div>
-          <button className="text-muted hover:text-dark">×</button>
+          <button 
+            id="btn-dismiss-moderation"
+            className="text-muted hover:text-dark cursor-pointer font-bold px-2"
+          >
+            ×
+          </button>
         </div>
       )}
+
+      <script dangerouslySetInnerHTML={{__html: `
+        if (typeof window !== 'undefined') {
+          if (localStorage.getItem('dismiss-2fa-reminder') === 'true') {
+            const b = document.getElementById('banner-2fa-reminder');
+            if (b) b.style.display = 'none';
+          }
+          if (localStorage.getItem('dismiss-moderation-rejected') === 'true') {
+            const b = document.getElementById('banner-moderation-rejected');
+            if (b) b.style.display = 'none';
+          }
+
+          const bindHandlers = () => {
+            const btn2fa = document.getElementById('btn-dismiss-2fa');
+            if (btn2fa) {
+              btn2fa.onclick = () => {
+                const b = document.getElementById('banner-2fa-reminder');
+                if (b) b.style.display = 'none';
+                localStorage.setItem('dismiss-2fa-reminder', 'true');
+              };
+            }
+            const btnMod = document.getElementById('btn-dismiss-moderation');
+            if (btnMod) {
+              btnMod.onclick = () => {
+                const b = document.getElementById('banner-moderation-rejected');
+                if (b) b.style.display = 'none';
+                localStorage.setItem('dismiss-moderation-rejected', 'true');
+              };
+            }
+          };
+
+          // Try binding immediately
+          bindHandlers();
+
+          // Also bind on DOMContentLoaded to guarantee setup on load/navigation
+          document.addEventListener('DOMContentLoaded', bindHandlers);
+        }
+      `}} />
 
       {/* Header Info */}
       <div className="flex justify-between items-center mb-6">
@@ -219,7 +267,7 @@ export default async function PublisherPlatformsPage({
         </div>
       ) : (
         <div className="platforms-grid flex flex-col gap-6">
-          {platforms.map((platform) => (
+          {platforms.map((platform: any) => (
             <div key={platform.id} className="card bg-card border-base rounded-lg p-6 relative">
               {/* Top Row: URL, Status, Actions */}
               <div className="flex justify-between items-start mb-6">
@@ -288,14 +336,14 @@ export default async function PublisherPlatformsPage({
                     <div className="flex justify-between items-center text-sm">
                       <span className="font-medium" style={{ color: '#475569' }}>Content placement</span>
                       <span className="font-bold font-space flex items-center gap-1.5" style={{ color: '#0f172a' }}>
-                        ${platform.packages.find(p => p.type === "ARTICLE_POSTING")?.price?.toFixed(2) || "10.00"} 
+                        ${platform.packages.find((p: any) => p.type === "ARTICLE_POSTING")?.price?.toFixed(2) || "10.00"} 
                         <PencilIcon className="w-3.5 h-3.5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />
                       </span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                       <span className="font-medium" style={{ color: '#475569' }}>Writing & placement</span>
                       <span className="font-bold font-space flex items-center gap-1.5" style={{ color: '#0f172a' }}>
-                        ${((platform.packages.find(p => p.type === "ARTICLE_POSTING")?.price || 10.00) + 15).toFixed(2)} 
+                        ${((platform.packages.find((p: any) => p.type === "ARTICLE_POSTING")?.price || 10.00) + 15).toFixed(2)} 
                         <PencilIcon className="w-3.5 h-3.5 text-gray-400 hover:text-primary cursor-pointer transition-colors" />
                       </span>
                     </div>

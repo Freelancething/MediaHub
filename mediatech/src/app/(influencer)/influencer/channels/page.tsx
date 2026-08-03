@@ -54,7 +54,7 @@ export default async function InfluencerChannelsPage() {
         </div>
       ) : (
         <div className="channels-grid flex flex-col gap-6">
-          {channels.map((channel) => {
+          {channels.map((channel: any) => {
             const isApproved = channel.status === "ACTIVE";
             const isPending = channel.status === "PENDING";
             const isRejected = channel.status === "REJECTED";
@@ -131,7 +131,7 @@ export default async function InfluencerChannelsPage() {
                     <span className="text-xs font-medium text-muted block mb-1">Social Packages</span>
                     <div className="flex flex-col gap-2">
                       {channel.packages && channel.packages.length > 0 ? (
-                        channel.packages.map((pkg) => (
+                        channel.packages.map((pkg: any) => (
                           <div key={pkg.id} className="flex justify-between items-center text-sm py-1.5 px-3 bg-white rounded-md border border-slate-200">
                             <span className="text-slate-600 font-medium capitalize">{pkg.type.toLowerCase()} shoutout</span>
                             <span className="font-semibold text-dark font-space">${pkg.price.toFixed(2)}</span>

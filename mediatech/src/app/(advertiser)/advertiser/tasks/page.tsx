@@ -132,7 +132,7 @@ export default async function AdvertiserTasksPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <div className="tasks-list flex flex-col gap-4">
-            {tasks.map((task) => (
+            {tasks.map((task: any) => (
               <div key={task.id} className="card bg-card border-base rounded-lg p-6 relative">
                 <div className="flex justify-between items-center mb-4">
                   <div>

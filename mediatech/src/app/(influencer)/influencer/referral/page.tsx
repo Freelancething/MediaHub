@@ -18,8 +18,8 @@ export default async function InfluencerReferralPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  const totalCommission = referrals.reduce((sum, r) => sum + r.commission, 0);
-  const paidCommission = referrals.filter(r => r.isPaid).reduce((sum, r) => sum + r.commission, 0);
+  const totalCommission = referrals.reduce((sum: number, r: any) => sum + r.commission, 0);
+  const paidCommission = referrals.filter((r: any) => r.isPaid).reduce((sum: number, r: any) => sum + r.commission, 0);
 
   return (
     <div style={{ maxWidth: "900px", margin: "0 auto" }}>
@@ -43,7 +43,7 @@ export default async function InfluencerReferralPage() {
           { icon: UserGroupIcon, label: "Total Referrals", value: referrals.length, color: "#3E4FEA" },
           { icon: CurrencyDollarIcon, label: "Total Earned", value: `$${totalCommission.toFixed(2)}`, color: "#22c55e" },
           { icon: CurrencyDollarIcon, label: "Paid Out", value: `$${paidCommission.toFixed(2)}`, color: "#d97706" },
-        ].map((s) => {
+        ].map((s: any) => {
           const Icon = s.icon;
           return (
             <div key={s.label} className="card bg-card border-base rounded-xl p-5">
@@ -88,7 +88,7 @@ export default async function InfluencerReferralPage() {
               </tr>
             </thead>
             <tbody>
-              {referrals.map(r => (
+              {referrals.map((r: any) => (
                 <tr key={r.id} className="border-b border-border last:border-0 hover:bg-app">
                   <td className="px-5 py-3">
                     <p className="font-semibold text-dark">{r.referred.name ?? "—"}</p>

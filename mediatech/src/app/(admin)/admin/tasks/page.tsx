@@ -123,7 +123,7 @@ export default async function AdminTasksPage({ searchParams }: { searchParams: P
             <tbody>
               {tasks.length === 0 ? (
                 <tr><td colSpan={7} className="px-5 py-12 text-center text-muted text-sm">No tasks found</td></tr>
-              ) : tasks.map((t) => {
+              ) : tasks.map((t: any) => {
                 const sc = STATUS_COLORS[t.status] ?? STATUS_COLORS.DRAFT;
                 const listing = t.platform?.url ?? (t.channel ? `@${t.channel.handle} (${t.channel.platform})` : "—");
                 const canAct = !["COMPLETED", "REJECTED"].includes(t.status);

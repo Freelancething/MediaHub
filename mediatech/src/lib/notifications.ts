@@ -1,8 +1,3 @@
-/**
- * Notification helper — create platform notifications for key task events.
- * Import in server actions to keep notification logic centralised.
- */
-
 import { db } from "@/lib/db";
 
 type NotifType = "TASK_UPDATE" | "PAYMENT" | "MESSAGE" | "SYSTEM";
@@ -57,6 +52,29 @@ export async function notifyTaskAccepted(taskId: string, advertiserId: string, s
     body: `${sellerName} accepted your placement order and has started working on it.`,
     link: `/advertiser/tasks/${taskId}`,
   });
+
+  try {
+    const advertiser = await db.user.findUnique({
+      where: { id: advertiserId },
+      select: { email: true, name: true }
+    });
+    const task = await db.task.findUnique({
+      where: { id: taskId },
+      select: { targetUrl: true }
+    });
+    if (advertiser?.email) {
+      const { sendTaskAcceptedEmail } = await import("./email");
+      await sendTaskAcceptedEmail(
+        advertiser.email,
+        advertiser.name ?? "Advertiser",
+        sellerName,
+        task?.targetUrl ?? "your task placement",
+        taskId
+      );
+    }
+  } catch (err) {
+    console.error("Failed to send task accepted email notification:", err);
+  }
 }
 
 export async function notifyTaskRejected(taskId: string, advertiserId: string, sellerName: string) {
@@ -77,6 +95,29 @@ export async function notifyDeliverableSubmitted(taskId: string, advertiserId: s
     body: `${sellerName} submitted the deliverable. Please review and approve or request revisions.`,
     link: `/advertiser/tasks/${taskId}`,
   });
+
+  try {
+    const advertiser = await db.user.findUnique({
+      where: { id: advertiserId },
+      select: { email: true, name: true }
+    });
+    const task = await db.task.findUnique({
+      where: { id: taskId },
+      select: { targetUrl: true }
+    });
+    if (advertiser?.email) {
+      const { sendDeliverableSubmittedEmail } = await import("./email");
+      await sendDeliverableSubmittedEmail(
+        advertiser.email,
+        advertiser.name ?? "Advertiser",
+        sellerName,
+        task?.targetUrl ?? "your task placement",
+        taskId
+      );
+    }
+  } catch (err) {
+    console.error("Failed to send deliverable submission email notification:", err);
+  }
 }
 
 export async function notifyTaskApproved(taskId: string, sellerId: string, amount: number) {
@@ -118,3 +159,26 @@ export async function notifyTopUp(userId: string, amount: number, method: string
     link: `/advertiser/balance`,
   });
 }
+
+export async function notifyWithdrawalProcessed(userId: string, amount: number, method: string, status: string, adminNote?: string | null) {
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { email: true, name: true }
+    });
+    if (user?.email) {
+      const { sendWithdrawalProcessedEmail } = await import("./email");
+      const details = adminNote || `Processed via ${method}`;
+      await sendWithdrawalProcessedEmail(
+        user.email,
+        user.name ?? "Partner",
+        amount,
+        status,
+        details
+      );
+    }
+  } catch (err) {
+    console.error("Failed to send withdrawal email notification:", err);
+  }
+}
+

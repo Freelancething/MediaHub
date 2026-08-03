@@ -105,7 +105,7 @@ export default async function AdminDashboardPage() {
           <div className="flex flex-col gap-3">
             {recentTasks.length === 0 ? (
               <p className="text-sm text-muted font-inter text-center py-4">No tasks yet</p>
-            ) : recentTasks.map((t) => (
+            ) : recentTasks.map((t: any) => (
               <div key={t.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                 <div>
                   <p className="text-xs font-semibold font-space text-dark">{t.advertiser.name} → {t.seller.name}</p>
@@ -132,7 +132,7 @@ export default async function AdminDashboardPage() {
           <div className="flex flex-col gap-3">
             {recentUsers.length === 0 ? (
               <p className="text-sm text-muted font-inter text-center py-4">No users yet</p>
-            ) : recentUsers.map((u) => (
+            ) : recentUsers.map((u: any) => (
               <div key={u.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                 <div>
                   <p className="text-xs font-semibold font-space text-dark">{u.name ?? u.email}</p>

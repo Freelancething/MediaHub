@@ -99,7 +99,7 @@ export default async function NewPlatformPage({
     redirect("/publisher/platforms");
   }
 
-  const defaultPrice = existingPlatform?.packages.find(p => p.type === "ARTICLE_POSTING")?.price || 10.00;
+  const defaultPrice = existingPlatform?.packages.find((p: any) => p.type === "ARTICLE_POSTING")?.price || 10.00;
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto' }}>

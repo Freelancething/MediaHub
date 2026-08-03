@@ -100,9 +100,16 @@ export function ChannelActionsDropdown({
               className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
             >
               <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-500" />
-              Visit Profile
             </a>
           )}
+          <Link
+            href={`/influencer/channels/new?edit=${channelId}`}
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            <PencilSquareIcon className="w-4 h-4 text-slate-500" />
+            Edit Channel & Pkgs
+          </Link>
           <div className="border-t border-slate-100 my-1"></div>
           <button
             type="button"

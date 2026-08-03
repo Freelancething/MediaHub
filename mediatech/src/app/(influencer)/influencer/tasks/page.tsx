@@ -95,7 +95,7 @@ export default async function InfluencerTasksPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            {tasks.map((task) => (
+            {tasks.map((task: any) => (
               <div
                 key={task.id}
                 className="card bg-card border-base rounded-lg p-6"
