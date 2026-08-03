@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ShoppingBagIcon, GlobeAltIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { ProjectSelectListener } from "@/components/advertiser/project-select-listener";
 
 export const metadata = {
   title: "New Placement Order - MediaHub",
@@ -247,27 +248,7 @@ export default async function NewTaskPage({ searchParams }: PageProps) {
         </form>
       </div>
 
-      <script dangerouslySetInnerHTML={{__html: `
-        setTimeout(() => {
-          const select = document.querySelector('select[name="projectId"]');
-          const field = document.getElementById('new-project-field');
-          if (select && field) {
-            select.addEventListener('change', function(e) {
-              const show = e.target.value === 'NEW';
-              field.style.display = show ? 'block' : 'none';
-              const input = field.querySelector('input');
-              if (input) {
-                if (show) {
-                  input.setAttribute('required', 'true');
-                  input.focus();
-                } else {
-                  input.removeAttribute('required');
-                }
-              }
-            });
-          }
-        }, 100);
-      `}} />
+      <ProjectSelectListener />
     </div>
   );
 }

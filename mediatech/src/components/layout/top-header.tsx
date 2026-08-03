@@ -121,11 +121,6 @@ export function TopHeader({
 
         {/* Actions */}
         <div className="header-actions">
-          {/* More options button */}
-          <button className="header-icon-btn" aria-label="More options">
-            <span style={{ fontSize: "18px", fontWeight: "bold", lineHeight: 1 }}>⋯</span>
-          </button>
-
           {/* Notification Bell with Dropdown */}
           <div style={{ position: "relative" }} ref={notifRef}>
             <button
