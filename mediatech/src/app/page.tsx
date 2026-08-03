@@ -1427,9 +1427,8 @@ export default function Home() {
                   setCtaRobotChecked(!ctaRobotChecked);
                   if (ctaError) setCtaError("");
                 }}
-                className={`w-[300px] bg-white rounded-xl border p-3.5 flex items-center justify-between text-left shadow-sm cursor-pointer transition ${
-                  ctaRobotChecked ? "border-emerald-500 bg-emerald-50/20" : "border-[#dcdce5]"
-                }`}
+                className={`w-[300px] bg-white rounded-xl border p-3.5 flex items-center justify-between text-left shadow-sm cursor-pointer transition ${ctaRobotChecked ? "border-emerald-500 bg-emerald-50/20" : "border-[#dcdce5]"
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <input

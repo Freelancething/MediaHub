@@ -304,9 +304,8 @@ export default function ContactPage() {
                   {/* reCAPTCHA Box */}
                   <div
                     onClick={() => setFormData({ ...formData, robotChecked: !formData.robotChecked })}
-                    className={`bg-white rounded-xl border p-3 flex items-center gap-4 text-xs font-semibold text-slate-700 shadow-sm shrink-0 cursor-pointer transition ${
-                      formData.robotChecked ? "border-emerald-500 bg-emerald-50/30" : "border-[#CBD5E1]"
-                    }`}
+                    className={`bg-white rounded-xl border p-3 flex items-center gap-4 text-xs font-semibold text-slate-700 shadow-sm shrink-0 cursor-pointer transition ${formData.robotChecked ? "border-emerald-500 bg-emerald-50/30" : "border-[#CBD5E1]"
+                      }`}
                   >
                     <input
                       type="checkbox"
@@ -349,76 +348,80 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* ─────────────────────────────────────────────
-           3. DARK NAVY AGENCY OR BRAND BANNER (Screenshot 3)
-           ───────────────────────────────────────────── */}
-        <section>
-          <div className="bg-[#0B1E2E] rounded-[36px] p-8 sm:p-14 text-white shadow-2xl space-y-10 border border-[#1E3A52] text-center max-w-5xl mx-auto">
-            <div className="space-y-3 max-w-2xl mx-auto">
-              <h3 className="text-3xl sm:text-4xl font-extrabold font-space">
-                Are you representing an <span className="text-[#38D479]">Agency</span> or a <span className="text-[#38D479]">Brand?</span>
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                Learn more about services and features MediaHub can offer for Agencies and Brands for better blog posting
-              </p>
+      </main>
+
+      {/* ─────────────────────────────────────────────
+         3. DARK NAVY AGENCY OR BRAND BANNER
+         ───────────────────────────────────────────── */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto my-12">
+        <div className="bg-[#0B1E2E] rounded-3xl p-8 sm:p-14 text-white shadow-2xl space-y-10 border border-[#1E3A52] text-center w-full">
+          <div className="space-y-3 max-w-2xl mx-auto">
+            <h3 className="text-3xl sm:text-4xl font-extrabold font-space">
+              Are you representing an <span className="text-[#38D479]">Agency</span> or a <span className="text-[#38D479]">Brand?</span>
+            </h3>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Learn more about services and features MediaHub can offer for Agencies and Brands for better blog posting
+            </p>
+          </div>
+
+          {/* 2 White Sub-Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left text-[#112C3E]">
+            {/* For Agencies */}
+            <div className="bg-white rounded-3xl p-8 space-y-6 shadow-lg flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xl font-bold font-space">For Agencies</h4>
+                  <Link
+                    href="/solutions"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#112C3E] text-xs font-bold hover:bg-[#38D479] transition"
+                  >
+                    <span>Get solutions</span>
+                    <ArrowUpRightIcon className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                <ul className="space-y-2.5 text-xs text-[#475569] font-medium">
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> 20+ filters</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> priority & friendly support from the MediaHub team</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> multiple sites' metrics</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> personalized platform walkthrough with the MediaHub manager</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> CSV task reports</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> custom lists creation</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> real-time answers to your questions to help you grow (during demo call)</li>
+                </ul>
+              </div>
             </div>
 
-            {/* 2 White Sub-Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left text-[#112C3E]">
-              {/* For Agencies */}
-              <div className="bg-white rounded-3xl p-8 space-y-6 shadow-lg flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xl font-bold font-space">For Agencies</h4>
-                    <Link
-                      href="/solutions"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#112C3E] text-xs font-bold hover:bg-[#38D479] transition"
-                    >
-                      <span>Get solutions</span>
-                      <ArrowUpRightIcon className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-
-                  <ul className="space-y-2.5 text-xs text-[#475569] font-medium">
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> 20+ filters</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> priority & friendly support from the MediaHub team</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> multiple sites' metrics</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> personalized platform walkthrough with the MediaHub manager</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> CSV task reports</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> custom lists creation</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> real-time answers to your questions to help you grow (during demo call)</li>
-                  </ul>
+            {/* For Brands */}
+            <div className="bg-white rounded-3xl p-8 space-y-6 shadow-lg flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xl font-bold font-space">For Brands</h4>
+                  <Link
+                    href="/solutions"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#112C3E] text-xs font-bold hover:bg-[#38D479] transition"
+                  >
+                    <span>Get solutions</span>
+                    <ArrowUpRightIcon className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
-              </div>
 
-              {/* For Brands */}
-              <div className="bg-white rounded-3xl p-8 space-y-6 shadow-lg flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xl font-bold font-space">For Brands</h4>
-                    <Link
-                      href="/solutions"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#112C3E] text-xs font-bold hover:bg-[#38D479] transition"
-                    >
-                      <span>Get solutions</span>
-                      <ArrowUpRightIcon className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-
-                  <ul className="space-y-2.5 text-xs text-[#475569] font-medium">
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> 20+ filters</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> priority & friendly support from the MediaHub team</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> multiple sites' metrics</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> personalized platform walkthrough with the MediaHub manager</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> clear and precise task tracking</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> sites from 50+ niches</li>
-                    <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> real-time answers to your questions to help you grow (during demo call)</li>
-                  </ul>
-                </div>
+                <ul className="space-y-2.5 text-xs text-[#475569] font-medium">
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> 20+ filters</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> priority & friendly support from the MediaHub team</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> multiple sites' metrics</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> personalized platform walkthrough with the MediaHub manager</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> clear and precise task tracking</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> sites from 50+ niches</li>
+                  <li className="flex items-start gap-2"><span className="text-[#112C3E] font-bold">✓</span> real-time answers to your questions to help you grow (during demo call)</li>
+                </ul>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+
+      <main className="w-full px-6 sm:px-8 lg:px-12 pb-12 max-w-6xl mx-auto space-y-16">
 
         {/* ─────────────────────────────────────────────
            4. PREFER FINDING ANSWERS ON YOUR OWN? (Screenshot 4)
