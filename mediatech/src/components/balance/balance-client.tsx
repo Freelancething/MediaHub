@@ -24,7 +24,7 @@ interface BalanceClientProps {
   onAddFundsAction?: (
     amount: number,
     method: string
-  ) => Promise<void>;
+  ) => Promise<{ url?: string; error?: string } | void | any>;
   activeBalanceType?: "main" | "reserved" | "bonus";
   /** Role-specific base path: "publisher" | "influencer" | "advertiser" */
   basePath: "publisher" | "influencer" | "advertiser";
@@ -103,7 +103,11 @@ export function BalanceClient({
     startTransition(async () => {
       try {
         const methodLabel = selectedMethod === "paypal" ? "PayPal" : "Credit Card";
-        await onAddFundsAction(depositValue, methodLabel);
+        const res = await onAddFundsAction(depositValue, methodLabel);
+        if (res?.url) {
+          window.location.href = res.url;
+          return;
+        }
         setIsTopUpOpen(false);
         setAmount("");
         window.location.reload();

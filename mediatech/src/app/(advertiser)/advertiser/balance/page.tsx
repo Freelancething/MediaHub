@@ -55,23 +55,64 @@ export default async function AdvertiserBalancePage({
   async function handleAddFundsAction(amountValue: number, methodLabel: string) {
     "use server";
     const session = await auth();
-    if (!session?.user?.id) return;
+    if (!session?.user?.id) throw new Error("Unauthorized");
 
+    const depositValue = amountValue;
+    if (depositValue < 5) throw new Error("Minimum deposit is $5.00");
+
+    // If card payment, initialize Stripe Checkout Session
+    if (methodLabel === "Credit Card") {
+      const { stripe } = await import("@/lib/stripe");
+      try {
+        const stripeSession = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          line_items: [
+            {
+              price_data: {
+                currency: "usd",
+                product_data: {
+                  name: "MediaHub Advertiser Wallet Top-Up",
+                  description: "Credits will be added to your account balance.",
+                },
+                unit_amount: Math.round(depositValue * 100), // amount in cents
+              },
+              quantity: 1,
+            },
+          ],
+          mode: "payment",
+          success_url: `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/advertiser/balance?payment=success`,
+          cancel_url: `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/advertiser/balance?payment=cancelled`,
+          metadata: {
+            userId: session.user.id,
+            amount: depositValue.toString(),
+          },
+        });
+
+        if (!stripeSession.url) {
+          throw new Error("Failed to generate checkout session url");
+        }
+
+        return { url: stripeSession.url };
+      } catch (err: any) {
+        console.error("Stripe error:", err);
+        throw new Error(err.message || "Failed to initialize Stripe checkout");
+      }
+    }
+
+    // Fallback: Local Sandbox/PayPal deposit
     const { db } = await import("@/lib/db");
     
-    const finalDeposit = amountValue;
-
     // Transaction atomically increments balance to prevent race conditions
     await db.$transaction([
       db.user.update({
         where: { id: session.user.id },
-        data: { balance: { increment: finalDeposit } }
+        data: { balance: { increment: depositValue } }
       }),
       db.transaction.create({
         data: {
           userId: session.user.id,
           type: "TOPUP",
-          amount: finalDeposit,
+          amount: depositValue,
           note: `Funds added via ${methodLabel}`
         }
       })
@@ -83,7 +124,7 @@ export default async function AdvertiserBalancePage({
         userId: session.user.id,
         type: "PAYMENT",
         title: "Balance topped up",
-        body: `$${finalDeposit.toFixed(2)} was successfully added to your balance via ${methodLabel}.`,
+        body: `$${depositValue.toFixed(2)} was successfully added to your balance via ${methodLabel}.`,
         link: "/advertiser/balance",
       }
     });

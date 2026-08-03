@@ -88,11 +88,11 @@
 
 ## Day 9 — Wallet & Stripe Payments
 - [x] Wallet page: Balance / Reserved / Bonus cards
-- [ ] Top-up via Stripe Checkout (preset amounts: $50, $100, $250, $500 + custom)
-- [ ] Stripe webhook: credit balance on successful payment
+- [x] Top-up via Stripe Checkout (preset amounts: $50, $100, $250, $500 + custom)
+- [x] Stripe webhook: credit balance on successful payment
 - [ ] Bonus logic (e.g. bank wire = +3% bonus)
 - [x] Transaction history table (filterable by type + date)
-- [ ] On task completion: reserved → publisher/influencer earning
+- [x] On task completion: reserved → publisher/influencer earning
 
 ---
 
@@ -100,7 +100,7 @@
 - [x] Seller wallet: Earnings / Reserved / Withdrawn
 - [x] Withdrawal request form (amount, method: PayPal / bank)
 - [x] Admin withdrawal approval queue
-- [ ] Earnings history with task reference links
+- [x] Earnings history with task reference links
 
 ---
 
@@ -109,8 +109,8 @@
 - [x] Notification dropdown with mark-as-read
 - [x] "View all notifications" page
 - [x] In-task chat thread (message input + message list)
-- [ ] Real-time via Supabase subscriptions or 5s polling fallback
-- [ ] Email notifications via Resend (task accepted, approval needed, withdrawal processed)
+- [x] Real-time via Supabase subscriptions or 5s polling fallback
+- [x] Email notifications via Resend (task accepted, approval needed, withdrawal processed)
 
 ---
 
@@ -127,11 +127,11 @@
 ## Day 13 — Additional Pages + Polish
 - [x] My Projects CRUD (advertiser)
 - [x] Media Partner List (saved publishers/influencers)
-- [ ] Content Purchase page
+- [x] Content Purchase page
 - [x] Referral Program page (publisher + influencer)
-- [ ] Dismissable promo banners (localStorage state)
+- [x] Dismissable promo banners (localStorage state)
 - [ ] Loading skeletons for all tables
-- [ ] Toast notifications (success, error, info)
+- [x] Toast notifications (success, error, info)
 - [ ] Mobile responsive + sidebar collapse toggle
 
 ---
